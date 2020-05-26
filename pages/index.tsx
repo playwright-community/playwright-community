@@ -15,19 +15,19 @@ const Index: NextPage<IndexProps> = ({
   return (
     <MainLayout>
       <>
-        <header className="px-3">
+        <header>
           <div className="flex flex-col items-center py-12">
             <span className="font-bold text-gray-800 hover:text-gray-700 text-5xl">
               Playwright Community
             </span>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-600 text-center">
               A central home for tutorials, tooling, and showcases of the Playwright ecosystem.
             </p>
           </div>
         </header>
 
         <div className="container mx-auto flex flex-wrap py-2">
-          <section className="w-full flex flex-col px-3">
+          <section className="w-full flex flex-col">
             {posts.map(post => <article key={post.slug} className="flex shadow my-4">
               <Link href={`blog/${post.slug}`}>
                 <a>
