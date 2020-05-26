@@ -13,7 +13,7 @@ interface BlogWrapperProps {
 const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta }) => <MainLayout>
   <header className="px-3">
     <div className="flex flex-col items-center py-4">
-      <span className="font-bold text-gray-800 hover:text-gray-700 text-5xl">
+      <span className="font-bold text-gray-800 hover:text-gray-700 text-4xl">
         {meta.title}
       </span>
       <p className="text-lg text-gray-600">
@@ -30,7 +30,7 @@ const CodeBlock: React.FunctionComponent = ({ children }) => {
   return (
     <Highlight {...defaultProps} code={(children as string).trim()} language="javascript" theme={theme}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre className={className} style={{ ...style, padding: '20px' }}>
+        <pre className={className} style={{ ...style, padding: '20px', overflowX: "auto" }}>
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
               {line.map((token, key) => (
