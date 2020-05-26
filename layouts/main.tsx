@@ -1,9 +1,19 @@
 import React from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 
-const MainLayout: React.FunctionComponent = ({ children }) => {
+interface MainLayoutProps {
+    title: string
+    description: string
+}
+
+const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title, description }) => {
     return (
         <>
+            <Head>
+                <title>{title} - Playwright Community</title>
+                <meta name="description" content={description} />
+            </Head>
             <nav className="w-full py-4 px-3 bg-blue-800 shadow">
                 <div className="w-full container mx-auto items-center justify-between">
                     <ul className="flex items-center justify-between font-bold text-sm text-white uppercase no-underline">

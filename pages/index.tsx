@@ -13,7 +13,7 @@ const Index: NextPage<IndexProps> = ({
   posts
 }) => {
   return (
-    <MainLayout>
+    <MainLayout title="Everything about the Playwright framework" description="A central home for tutorials, tooling, and showcases of the Playwright ecosystem.">
       <>
         <header>
           <div className="flex flex-col items-center py-12">
