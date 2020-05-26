@@ -7,15 +7,17 @@ const MainLayout: React.FunctionComponent = ({ children }) => {
             <nav className="w-full py-4 bg-blue-800 shadow">
                 <div className="w-full container mx-auto items-center justify-between">
                     <ul className="flex items-center justify-between font-bold text-sm text-white uppercase no-underline">
-                        <li>
+                        <span>
                             <Link href="/">
                                 <a className="hover:text-gray-200 hover:underline px-4">
                                     Playwright Community
                                 </a>
                             </Link>
-                        </li>
-                        <li><a className="hover:text-gray-200 hover:underline px-4 float-right" href="https://try.playwright.tech">Try Playwright</a></li>
-                        <li><a className="hover:text-gray-200 hover:underline px-4 float-right" href="https://github.com/microsoft/playwright">Playwright on GitHub</a></li>
+                        </span>
+                        <span className="float-right">
+                            <a className="hover:text-gray-200 hover:underspan px-5" href="https://try.playwright.tech">Try Playwright</a>
+                            <a className="hover:text-gray-200 hover:underspan float-right" href="https://github.com/microsoft/playwright">Playwright on GitHub</a>
+                        </span>
                     </ul>
                 </div>
             </nav>
