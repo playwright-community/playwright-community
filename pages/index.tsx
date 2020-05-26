@@ -15,7 +15,7 @@ const Index: React.FunctionComponent<IndexProps> = ({
   return (
     <MainLayout>
       <>
-        <header className="w-full container mx-auto px-3">
+        <header className="px-3">
           <div className="flex flex-col items-center py-12">
             <span className="font-bold text-gray-800 hover:text-gray-700 text-5xl">
               Playwright Community
@@ -28,8 +28,7 @@ const Index: React.FunctionComponent<IndexProps> = ({
 
         <div className="container mx-auto flex flex-wrap py-2">
           <section className="w-full flex flex-col px-3">
-
-            {posts.map(post => <article className="flex shadow my-4">
+            {posts.map(post => <article key={post.slug} className="flex shadow my-4">
               <Link href={`blog/${post.slug}`}>
                 <a>
                   <div className="bg-white flex flex-col justify-start p-6">

@@ -1,0 +1,29 @@
+import PlaywrightStarStatsImg from './assets/star-history-playwright.png'
+
+export const meta = {
+  title: 'What is Playwright?',
+  description: "Short introduction and walkthrough into the Playwright framework: a Node.js library to automate Chromium, Firefox and WebKit with a single API.",
+  author: "Max Schmitt",
+  date: "2020-05-26",
+  tags: ["getting-started", "tutorial", "introduction"]
+}
+
+Over the past 2 years where the [Puppeteer](https://github.com/puppeteer/puppeteer) ecosystem has evolved and developers around the globe have adopted the framework to automate their browsers, the framework has gained a lot of popularity. Puppeteer itself has now over 60k stars on GitHub and is by that one of the [most starred projects](http://gitmostwanted.com/top/stars/solid/2) on the platform. During the big audience and the people who integrated it into their projects to use it e.g. to perform end-to-end tests or create automated screenshots, Puppeteer reached his limitations. The community asked for better browser support, for this specific request they delivered [puppeteer-firefox](https://github.com/puppeteer/puppeteer#q-what-is-the-status-of-cross-browser-support) which was announced at the [Google I/O 2019](https://youtu.be/MbnATLCuKI4). But also smaller core concept changes would ease up the usage like less flakiness by waiting automatically if an element appears on the page or isolating the session on a context instead of the whole browser to provide better reusability.
+
+For all of that the core team which is now primarily working at Microsoft has worked over the past few months and released on Januar 2020 the first version of Playwright. It has features like:
+
+- Scenarios that span multiple page, domains and iframes
+- Auto-wait for elements to be ready before executing actions (like click, fill)
+- Intercept network activity for stubbing and mocking network requests
+- Emulate mobile devices, geolocation, permissions
+- Support for web components via shadow-piercing selectors
+- Native input events for mouse and keyboard
+- Upload and download files
+
+Until now (June 2020) the project already got 13k stars on GitHub and big projects like Visual Studio Code, CodeceptJS or xterm.js have adopted it.
+
+<a href="https://star-history.t9t.io/#microsoft/playwright" target="_blank">
+  <img src={PlaywrightStarStatsImg} alt="Star history Playwright Q1 2020"/>
+</a>
+
+Due to all of that it can be advised for further usage to use Playwright instead of [Puppeteer](https://pptr.dev). The API is in most cases the same or only slightly different. [Here](https://medium.com/@davert/puppeteer-to-playwright-migration-guide-6c86ea66e85e) you can find a migration guide with the differences. And an official link to their documentation including the JavaScript API you can find under [playwright.dev](https://playwright.dev).
