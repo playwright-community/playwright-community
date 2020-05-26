@@ -1,7 +1,7 @@
-import Nav from '../components/nav'
 import MainLayout from '../layouts/main'
 import { Meta } from 'types/blog'
 import Link from 'next/link'
+import type { NextPage } from 'next';
 
 interface IndexProps {
   posts: (Meta & {
@@ -9,7 +9,7 @@ interface IndexProps {
   })[]
 }
 
-const Index: React.FunctionComponent<IndexProps> = ({
+const Index: NextPage<IndexProps> = ({
   posts
 }) => {
   return (
