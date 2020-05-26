@@ -14,7 +14,7 @@ const MainLayout: React.FunctionComponent = ({ children }) => {
                                 </a>
                             </Link>
                         </li>
-                        <li><a className="hover:text-gray-200 hover:underline px-4 float-right" href="https://github.com/microsoft/playwright">Try Playwright</a></li>
+                        <li><a className="hover:text-gray-200 hover:underline px-4 float-right" href="https://try.playwright.tech">Try Playwright</a></li>
                         <li><a className="hover:text-gray-200 hover:underline px-4 float-right" href="https://github.com/microsoft/playwright">Playwright on GitHub</a></li>
                     </ul>
                 </div>
