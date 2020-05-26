@@ -1,5 +1,5 @@
 import { MDXProvider } from '@mdx-js/react'
-import Highlight, { defaultProps } from 'prism-react-renderer'
+import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import theme from "prism-react-renderer/themes/github";
 
 import { Meta } from 'types/blog'
@@ -26,11 +26,16 @@ const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta
 
 const CustomLink: React.FunctionComponent = ({ ...props }) => <a {...props} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" />
 
-const CodeBlock: React.FunctionComponent = ({ children }) => {
+interface CodeBlockProps {
+  className: string
+}
+
+const CodeBlock: React.FunctionComponent<CodeBlockProps> = ({ children, className }) => {
+  const language = className?.replace(/language-/, '') as Language
   return (
-    <Highlight {...defaultProps} code={(children as string).trim()} language="javascript" theme={theme}>
+    <Highlight {...defaultProps} code={(children as string).trim()} language={language} theme={theme}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre className={className} style={{ ...style, padding: '20px', overflowX: "auto" }}>
+        <pre className={`${className} my-3 p-5 overflow-x-auto`} style={style}>
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line, key: i })}>
               {line.map((token, key) => (
@@ -49,7 +54,14 @@ const components = {
   a: CustomLink,
   p: ({ ...props }) => <p className="my-3" {...props} />,
   ul: ({ ...props }) => <ul className="list-disc ml-5" {...props} />,
-  code: CodeBlock
+  code: CodeBlock,
+  inlineCode: ({ ...props }) => <code className="bg-gray-100 px-1 text-purple-600" {...props} />,
+  h1: ({ ...props }) => <h1 className="text-5xl" {...props} />,
+  h2: ({ ...props }) => <h2 className="text-4xl" {...props} />,
+  h3: ({ ...props }) => <h3 className="text-3xl" {...props} />,
+  h4: ({ ...props }) => <h4 className="text-2xl" {...props} />,
+  h5: ({ ...props }) => <h5 className="text-xl" {...props} />,
+  h6: ({ ...props }) => <h6 className="text-lg" {...props}/>,
 }
 
 const MyApp = ({ Component, pageProps }) => <MDXProvider components={components}>
