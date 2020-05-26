@@ -68,7 +68,7 @@ Index.getInitialProps = async () => {
     });
   })(require.context("./blog", true, /\.mdx$/));
   return {
-    posts: posts.sort((a, b) => b.date - a.date)
+    posts: posts.sort((a, b) => b.date - a.date).filter(post => !post.hidden)
   }
 }
 

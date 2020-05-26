@@ -26,6 +26,24 @@ Until now (June 2020) the project already got 13k stars on GitHub and big projec
   <img src={PlaywrightStarStatsImg} alt="Star history Playwright Q1 2020"/>
 </a>
 
-If you want to get started on Playwright, you can check out the examples with [Try Playwright](https://try.playwright.tech) to get an interactive experience of how the different browser engines behave.
+The usage of Playwright is extremely straightforward. Most of the calls are async based, that means you have to wrap them either in a Promise or you have to use async/await which is the more common way.
+
+```js
+const playwright = require("playwright");
+
+(async () => {
+  for (const browserType of ['chromium', 'webkit', 'firefox']) {
+    const browser = await playwright[browserType].launch();
+    const page = await context.newPage();
+    await page.goto('http://whatsmyuseragent.org/');
+    await page.screenshot({ path: `example-${browserType}.png` });
+    await browser.close();
+  }
+})();
+```
+
+After importing the library we're gonna looping over the different browsers and launching them as headless browsers. Launching means in Playwright wording, that a real browser instance will be opened as a headless instance per default. Once we have our browser we are creating an actual page object out of it. With the page you can interact than by clicking on buttons, making screenshots, getting text out of your DOM Nodes, or navigating to other URLs for example. In this case we are visiting a website and then making a screenshot which we store on the disk including the browser's name. Once we are done we'll close the whole browser.
+
+If you want to find out more about Playwright, you can check out the examples with [Try Playwright](https://try.playwright.tech) to get an interactive experience of how the different browser engines behave.
 
 Due to all of that it can be advised for further usage to use Playwright instead of [Puppeteer](https://pptr.dev). The API is in most cases the same or only slightly different. [Here](https://medium.com/@davert/puppeteer-to-playwright-migration-guide-6c86ea66e85e) you can find a migration guide with the differences. And an official link to their documentation including the JavaScript API you can find under [playwright.dev](https://playwright.dev).

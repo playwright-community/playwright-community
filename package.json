@@ -21,6 +21,7 @@
     "@types/webpack-env": "^1.15.2",
     "next-images": "^1.4.0",
     "postcss-preset-env": "^6.7.0",
+    "prism-react-renderer": "^1.1.1",
     "tailwindcss": "^1.4.0",
     "typescript": "^3.9.3"
   }
