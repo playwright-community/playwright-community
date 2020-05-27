@@ -10,7 +10,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title, description, image }) => {
     const fullTitle = `${title} - Playwright Community`
-    const baseURL = "https://" + (process.env.NEXT_PUBLIC_VERCEL_URL || "")
+    const baseURL = "https://" + (process.env.VERCEL_URL || "")
     return (
         <>
             <Head>
