@@ -14,16 +14,21 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
         <>
             <Head>
                 <title>{fullTitle}</title>
+                <meta name="title" content={fullTitle} />
                 <meta name="description" content={description} />
                 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎭</text></svg>" />
                 <meta property="og:title" content={fullTitle} />
                 <meta property="og:type" content="website" />
                 <meta property="og:description" content={description} />
-                {image && <>
+                {image ? <>
                     <meta property="og:image" content={image} />
                     <meta name="twitter:image" content={image} />
-                </>}
-                <meta name="twitter:card" content="summary" />
+                    <meta property="twitter:card" content="summary_large_image" />
+                </> : <>
+                        <meta name="twitter:card" content="summary" />
+                    </>}
+                <meta property="twitter:title" content={fullTitle} />
+                <meta property="twitter:description" content={description} />
             </Head>
             <nav className="w-full py-4 px-3 bg-blue-800 shadow">
                 <div className="w-full container mx-auto items-center justify-between">
