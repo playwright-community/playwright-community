@@ -1,0 +1,145 @@
+import openGraphImage from './opengraph.png'
+
+export const meta = {
+  title: 'Using Jest with Playwright',
+  description: "In this blog post, we'll compare two Jest setups for creating and running end-to-end tests with Playwright.",
+  author: "Max Schmitt",
+  date: "2020-05-28",
+  tags: ["jest", "getting-started", "tooling"],
+  image: openGraphImage,
+  hidden: true
+}
+
+<div className="float-right m-1">
+  <img src={openGraphImage} style={{maxHeight: 160}}/>
+</div>
+
+Having a test runner like Jest configured has a lot of benefits instead of writing your tests from scratch. It gives you out of the box the ability to focus a single test, providing a formatted output or a whole suite for common assertions called `expect` in Jest. The framework is maintained by Facebook and is mostly the default choice for writing frontend or backend unit tests in the JavaScript ecosystem. It's framework agnostic and by that, you can test with it e.g. your express backend or your React components.
+
+The way how you should integrate Playwright into your project depends on your needs. Currently there two common ways of doing that. Either you can do it manually by using the hooks (`beforeAll`, `afterAll`, `beforeEach`, `afterEach`) or you use [`jest-playwright`](https://github.com/playwright-community/jest-playwright). We recommend to use jest-playwright due it has features like:
+- Multi-browser and device (like iPhones with given screen sizes) support
+- [jest-dev-server](http://yarnpkg.com/en/package/jest-dev-server) integration which can start your webserver like create-react-app before running the tests
+- [expect-playwright](https://github.com/playwright-community/expect-playwright) integration which provides common `expect` helper functions
+
+#### Using `jest-playwright`
+
+To get started we first have to install the needed Node.js packages either over NPM or Yarn. It's common to install them as `devDependencies` so they won't be installed on your production environments.
+
+```txt
+npm install -D jest jest-playwright-preset playwright
+```
+
+Instead of installing all the browsers with the `playwright` package, you can also just install e.g. `playwright-chromium` to save bandwidth and storage on your system and have a faster installation time.
+
+Once we installed the dependencies, we have to create a Jest configuration to instruct Jest which preset should be used for which files. You can either reuse your existing configuration (`jest.config.js`) or create a custom one and name it e.g. `jest.e2e.config.js`. In the end, when you run your tests, you then have to specify the custom config file with the `-c` flag. It's also common to separate your unit tests from the end-to-end tests with a separate configuration file.
+
+Inside the Jest configuration file you have to put:
+
+```js
+module.exports = {
+    preset: "jest-playwright-preset"
+}
+```
+
+Also since this is a normal Jest configuration you can pass a `RegExp` which determines the files which Jest should run. It's useful to use e.g. a custom folder or file suffix as a naming convention to separate your unit tests from the end-to-end tests. See here as a reference for the [`testRegex`](https://jestjs.io/docs/en/configuration#testregex-string--arraystring) setting.
+
+For the basic configuration this is already enough to get started. If you want to setup custom browsers, devices, screen resolutions or other launch settings for Playwright, then you need a custom Playwright configuration. Create a file called `jest-playwright.config.js` in the root directory of your project to use the settings which are descriped in the [jest-playwright documentation](https://github.com/playwright-community/jest-playwright#configuration).
+
+```js
+module.exports = {
+  launchBrowserApp: {
+    headless: true
+  },
+  context: {
+    ignoreHTTPSErrors: true,
+    viewport: {
+      width: 1920,
+      height: 1080
+    }
+  },
+  browsers: ["chromium", "firefox"],
+  devices: []
+}
+```
+
+Keep in mind, that all the values in the configuration are optional and only showed here to give insights how it can be used in common testing setups.
+
+To run your tests you can add `jest` or `jest -c config.e2e.config.js` to your `scripts` section of your `package.json` to run them easier by using `npm run test`.
+
+Here's an example output how it will look like:
+
+```txt
+PASS browser: chromium src/e2e/platform.e2e.ts (23.729s)
+Profile Settings
+    ✓ should be redirected to login page if not logged in (568ms)
+    ✓ should be able to login by email and password (404ms)
+    ✓ should be able to see their email and name on account settings page (155ms)
+    ✓ should be able to change their email and name on account settings page (562ms)
+File handling
+    ✓ should be able to import a CSV (705ms)
+    ✓ should be able to view a files (742ms)
+    ✓ should be able to delete a file (606ms)
+    ✓ should be able to edit a file (806ms)
+```
+
+For more information about `jest-playwright` you'll find the full documentation on [GitHub](https://github.com/playwright-community/jest-playwright).
+
+#### Using it from scratch
+
+As you can see in the following code, we use the lifecycle hooks to launch a browser before all the tests which run and close them once all are done. For every test `beforeEach` will create a new page as a global variable which will be used inside the tests. In this example we are visiting example.com and testing if the title of it contains `Example Domain`.
+
+```js
+const { chromium } = require('playwright');
+const expect = require('expect');
+let browser;
+let page;
+beforeAll(async () => {
+  browser = await chromium.launch();
+});
+afterAll(async () => {
+  await browser.close();
+});
+beforeEach(async () => {
+  page = await browser.newPage();
+});
+afterEach(async () => {
+  await page.close();
+});
+it('should work', async () => {
+  await page.goto('https://www.example.com/');
+  expect(await page.title()).toBe('Example Domain');
+});
+```
+
+In the creation of the browser (`chromium.launch`) or the creation of the page (`browser.newPage`) you can passs options e.g. to start the browser as headful insetead of headless to manually click around or to ignore invalid SSL certificates which is useful for local testing.
+
+### Writing tests
+
+Once you have a setup in place, you can then follow up by using tools like [`expect-playwright`](https://github.com/playwright-community/expect-playwright) (pre-installed with jest-playwright) which gives you a few utility methods on your Jest matching class to use it like that:
+
+```js
+it("should...", async() => {
+  // before
+  await page.waitForSelector("#foo")
+  const textContent = await page.$eval("#foo", el => el.textContent)
+  expect(textContent).stringContaining("my text")
+
+  // after by using expect-playwright
+  await expect(page).toHaveText("#foo", "my text")
+})
+```
+
+Or you are also able to assert the value of input nodes on the page:
+
+```js
+it("should...", async() => {
+  await expect(page).toEqualValue("#my-element", "Playwright")
+})
+```
+
+---
+
+For more information about that we recommend to dig into these projects/articles to find out more:
+- Different selector engines on [playwright.dev](https://playwright.dev/#version=v1.0.2&path=docs%2Fcore-concepts.md&q=selectors)
+- Utility helper functions for Jest: [`expect-playwright`](https://github.com/playwright-community/expect-playwright)
+- Run if needed your backend or frontend before your Jest tests with [jest-dev-server](https://github.com/playwright-community/jest-playwright#start-a-server)

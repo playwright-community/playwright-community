@@ -5,15 +5,28 @@ import Head from 'next/head'
 interface MainLayoutProps {
     title: string
     description: string
+    image?: string
 }
 
-const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title, description }) => {
+const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title, description, image }) => {
+    const fullTitle = `${title} - Playwright Community`
     return (
         <>
             <Head>
-                <title>{title} - Playwright Community</title>
+                <title>{fullTitle}</title>
+                <meta name="title" content={fullTitle} />
                 <meta name="description" content={description} />
                 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎭</text></svg>" />
+                <meta property="og:title" content={fullTitle} />
+                <meta property="og:type" content="website" />
+                <meta property="og:description" content={description} />
+                <meta name="twitter:card" content="summary" />
+                {image && <>
+                    <meta property="og:image" content={image} />
+                    <meta name="twitter:image" content={image} />
+                </>}
+                <meta property="twitter:title" content={fullTitle} />
+                <meta property="twitter:description" content={description} />
             </Head>
             <nav className="w-full py-4 px-3 bg-blue-800 shadow">
                 <div className="w-full container mx-auto items-center justify-between">
@@ -33,7 +46,7 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                 </div>
             </nav>
 
-            <div className="container mx-auto px-3">
+            <div className="container mx-auto p-3">
                 {children}
             </div>
             <footer className="w-full border-t bg-white py-4">

@@ -4,5 +4,6 @@ export interface Meta {
   author: string
   date: Date
   tags: string[]
+  image?: string
   hidden: boolean
 }
