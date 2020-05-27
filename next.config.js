@@ -13,10 +13,6 @@ module.exports = withMDX(withImages({
       },
       use: ['@svgr/webpack'],
     });
-
     return config;
-  },
-  env: {
-    VERCEL_URL: process.env.VERCEL_URL,
-  },
+  }
 }))
