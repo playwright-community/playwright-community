@@ -20,13 +20,11 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                 <meta property="og:title" content={fullTitle} />
                 <meta property="og:type" content="website" />
                 <meta property="og:description" content={description} />
-                {image ? <>
+                <meta name="twitter:card" content="summary" />
+                {image && <>
                     <meta property="og:image" content={image} />
                     <meta name="twitter:image" content={image} />
-                    <meta property="twitter:card" content="summary_large_image" />
-                </> : <>
-                        <meta name="twitter:card" content="summary" />
-                    </>}
+                </>}
                 <meta property="twitter:title" content={fullTitle} />
                 <meta property="twitter:description" content={description} />
             </Head>
