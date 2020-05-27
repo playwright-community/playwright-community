@@ -16,4 +16,7 @@ module.exports = withMDX(withImages({
 
     return config;
   },
+  env: {
+    VERCEL_URL: process.env.VERCEL_URL,
+  },
 }))
