@@ -13,9 +13,9 @@ interface BlogWrapperProps {
 const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta }) => <MainLayout title={meta.title} description={meta.description}>
   <header className="px-3">
     <div className="flex flex-col items-center py-4">
-      <span className="font-bold text-gray-800 hover:text-gray-700 text-4xl">
+      <h1 className="font-bold text-gray-800 hover:text-gray-700 text-4xl">
         {meta.title}
-      </span>
+      </h1>
       <p className="text-lg text-gray-600">
         {meta.description}
       </p>

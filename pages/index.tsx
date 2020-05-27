@@ -17,9 +17,9 @@ const Index: NextPage<IndexProps> = ({
       <>
         <header>
           <div className="flex flex-col items-center py-12">
-            <span className="font-bold text-gray-800 hover:text-gray-700 text-4xl">
+            <h1 className="font-bold text-gray-800 hover:text-gray-700 text-4xl">
               Playwright Community
-            </span>
+            </h1>
             <p className="text-lg text-gray-600 text-center">
               A central home for tutorials, tooling, and showcases of the Playwright ecosystem.
             </p>
