@@ -14,5 +14,6 @@ module.exports = withMDX(withImages({
       use: ['@svgr/webpack'],
     });
     return config;
-  }
+
+  },
 }))
