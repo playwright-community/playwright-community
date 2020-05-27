@@ -10,6 +10,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title, description, image }) => {
     const fullTitle = `${title} - Playwright Community`
+    const baseURL = "https://" + (process.env.VERCEL_URL || "")
     return (
         <>
             <Head>
@@ -22,8 +23,8 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                 <meta property="og:description" content={description} />
                 <meta name="twitter:card" content="summary" />
                 {image && <>
-                    <meta property="og:image" content={image} />
-                    <meta name="twitter:image" content={image} />
+                    <meta property="og:image" content={baseURL + image} />
+                    <meta name="twitter:image" content={baseURL + image} />
                 </>}
                 <meta property="twitter:title" content={fullTitle} />
                 <meta property="twitter:description" content={description} />
