@@ -43,7 +43,7 @@ module.exports = {
 
 Also since this is a normal Jest configuration you can pass a `RegExp` which determines the files which Jest should run. It's useful to use e.g. a custom folder or file suffix as a naming convention to separate your unit tests from the end-to-end tests. See here as a reference for the [`testRegex`](https://jestjs.io/docs/en/configuration#testregex-string--arraystring) setting.
 
-For the basic configuration this is already enough to get started. If you want to setup custom browsers, devices, screen resolutions or other launch settings for Playwright, then you need a custom Playwright configuration. Create a file called `jest-playwright.config.js` in the root directory of your project to use the settings which are descriped in the [jest-playwright documentation](https://github.com/playwright-community/jest-playwright#configuration).
+For the basic configuration this is already enough to get started. If you want to setup custom browsers, devices, screen resolutions or other launch settings for Playwright, then you need a custom Playwright configuration. Create a file called `jest-playwright.config.js` in the root directory of your project to use the settings which are described in the [jest-playwright documentation](https://github.com/playwright-community/jest-playwright#configuration).
 
 ```js
 module.exports = {
@@ -111,7 +111,7 @@ it('should work', async () => {
 });
 ```
 
-In the creation of the browser (`chromium.launch`) or the creation of the page (`browser.newPage`) you can passs options e.g. to start the browser as headful insetead of headless to manually click around or to ignore invalid SSL certificates which is useful for local testing.
+In the creation of the browser (`chromium.launch`) or the creation of the page (`browser.newPage`) you can passs options e.g. to start the browser as headful instead of headless to manually click around or to ignore invalid SSL certificates which is useful for local testing.
 
 ### Writing tests
 
@@ -129,7 +129,7 @@ it("should...", async() => {
 })
 ```
 
-Or you are also able to assert the value of input nodes on the page:
+Or you are also able to assert the value of input DOM nodes on the page:
 
 ```js
 it("should...", async() => {
