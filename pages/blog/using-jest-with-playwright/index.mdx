@@ -41,7 +41,7 @@ module.exports = {
 }
 ```
 
-Also since this is a normal Jest configuration you can pass a `RegExp` which determines the files which Jest should run. It's useful to use e.g. a custom folder or file suffix as a naming convention to separate your unit tests from the end-to-end tests. See here as a reference for the [`testRegex`](https://jestjs.io/docs/en/configuration#testregex-string--arraystring) setting.
+Also since this is a normal Jest configuration you can pass a `RegExp` or glob pattern which determines the files which Jest should run. It's useful to use e.g. a custom folder or file suffix as a naming convention to separate your unit tests from the end-to-end tests. See here as a reference for the [`testRegex`](https://jestjs.io/docs/en/configuration#testregex-string--arraystring) and [`testMatch`](https://jestjs.io/docs/en/configuration#testmatch-arraystring) setting.
 
 For the basic configuration this is already enough to get started. If you want to setup custom browsers, devices, screen resolutions or other launch settings for Playwright, then you need a custom Playwright configuration. Create a file called `jest-playwright.config.js` in the root directory of your project to use the settings which are described in the [jest-playwright documentation](https://github.com/playwright-community/jest-playwright#configuration).
 
