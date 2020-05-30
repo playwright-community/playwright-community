@@ -21,6 +21,12 @@ const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta
       </p>
     </div>
   </header>
+  <p className="text-sm mb-2">
+    By <span className="font-semibold hover:text-gray-800">
+      {meta.author}
+    </span>
+    , Published on {new Date(meta.date).toLocaleDateString()}
+  </p>
   {children}
 </MainLayout>
 
@@ -61,7 +67,7 @@ const components = {
   h3: ({ ...props }) => <h3 className="text-3xl" {...props} />,
   h4: ({ ...props }) => <h4 className="text-2xl" {...props} />,
   h5: ({ ...props }) => <h5 className="text-xl" {...props} />,
-  h6: ({ ...props }) => <h6 className="text-lg" {...props}/>,
+  h6: ({ ...props }) => <h6 className="text-lg" {...props} />,
 }
 
 const MyApp = ({ Component, pageProps }) => <MDXProvider components={components}>
