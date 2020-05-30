@@ -4,10 +4,9 @@ export const meta = {
   title: 'Using Jest with Playwright',
   description: "In this blog post, we'll compare two Jest setups for creating and running end-to-end tests with Playwright.",
   author: "Max Schmitt",
-  date: "2020-05-28",
+  date: "2020-05-31",
   tags: ["jest", "getting-started", "tooling"],
-  image: openGraphImage,
-  hidden: true
+  image: openGraphImage
 }
 
 <div className="float-right m-1">
@@ -82,7 +81,7 @@ File handling
     ✓ should be able to edit a file (806ms)
 ```
 
-For more information about `jest-playwright` you'll find the full documentation on [GitHub](https://github.com/playwright-community/jest-playwright).
+For more information about `jest-playwright`, you'll find the full documentation on [GitHub](https://github.com/playwright-community/jest-playwright).
 
 #### Using it from scratch
 
@@ -90,7 +89,6 @@ As you can see in the following code, we use the lifecycle hooks to launch a bro
 
 ```js
 const { chromium } = require('playwright');
-const expect = require('expect');
 let browser;
 let page;
 beforeAll(async () => {
@@ -106,7 +104,7 @@ afterEach(async () => {
   await page.close();
 });
 it('should work', async () => {
-  await page.goto('https://www.example.com/');
+  await page.goto('https://www.example.com');
   expect(await page.title()).toBe('Example Domain');
 });
 ```
