@@ -1,17 +1,18 @@
 export const meta = {
   title: 'Record your Playwright browser with playwright-video',
-  description: "Deep dive into how you record a Chromium browser with playwright-video and upload the recording on GitHub Actions when it fails.",
+  description: "Deep dive into how you record a Chromium browser with playwright-video and upload the recording with GitHub Actions as an artifact when it fails.",
   author: "Max Schmitt",
-  date: "2020-06-3",
-  tags: ["video", "chromium", "tooling"],
-  hidden: true
+  date: "2020-06-01",
+  tags: ["video", "chromium", "tooling"]
 }
+
+#### Introduction
 
 Video recordings of your end-to-end test case execution can play a critical role. Not only would these help in debugging issues more efficiently, but you can use recorded videos to show test execution activities to your team and internal stakeholders. Additionally, these recorded videos can be added to your CI pipeline artifacts if a test is failing.
 
 Currently, there is no native way of recording a session with Playwright's standards. But the [QAWolf](https://github.com/qawolf/qawolf) team has created for that a third party library to record Chromium based sessions. It's based on [screencast feature](https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-startScreencast) which Chromium will expose over the Chrome DevTools Protocol.
 
-### Installation
+#### Installation
 
 To install it, you need the actual package and an available installation of ffmpeg. For most cases ffmpeg-static should be enough which will download a precompiled binary of ffmpeg when you install your NPM dependencies:
 
@@ -19,7 +20,7 @@ To install it, you need the actual package and an available installation of ffmp
 npm i -D playwright-video ffmpeg-static
 ```
 
-### Basic usage
+#### Basic usage
 
 It's implemented per Page level, that means you can have a recording for a single page which you start and stop as soon as you are done.
 
@@ -45,12 +46,12 @@ const { saveVideo } = require('playwright-video');
 
 Once you have called the [`saveVideo`](https://github.com/qawolf/playwright-video#api) function by providing the page, the browser session will be recorded and stored on the given filepath until you call the stop function. In the example above Playwright visits a few websites and then closes the session. It will look like that in the end:
 
-<video style={{maxHeight: 500}} controls muted autoPlay loop>
+<video style={{maxHeight: 500}} className="my-2" controls muted autoPlay loop>
   <source src="/blog/record-your-browser-tests-with-playwright/video.mp4" type="video/mp4"/>
 Your browser does not support the video tag.
 </video>
 
-### Usage with `jest-playwright`
+#### Usage with `jest-playwright`
 
 To integrate `jest-playwright` with `playwright-video` you can use the available utility methods to hook into the startup and teardown of the Playwright session.
 
@@ -79,7 +80,7 @@ The shown code does the same as the other implementation and navigates by that t
 
 A complete working implementation of `playwright-video` with `jest-playwright` as a reference you also find in the official examples repository of [`jest-playwright`](https://github.com/playwright-community/playwright-jest-examples) project.
 
-### Integration in GitHub Actions
+#### Integration in GitHub Actions
 
 The big benefit of having recordings in place as mentioned is for example to debug failed or flaky tests easier. In most cases, you run the end-to-end tests in CI environments like GitHub Actions. Since we've already seen the integration with `jest-playwright`, we only have to adjust our CI pipeline configuration to upload the recording if the end-to-end tests are failing. For GitHub Actions a minimal example would look like that:
 
@@ -90,7 +91,7 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses:
     - name: Use Node.js
       uses: actions/setup-node@v1
       with:
@@ -107,7 +108,7 @@ jobs:
         path: recording.mp4
 ```
 
-In this example after the general steps (checkout, install Node.js) are running the end-to-end tests as usual via `jest-playwright` (we call Jest in the `package.json` script section) will be triggered via `npm run test:e2e`. By adding the if condition to the action for uploading the artifacts, we instruct the CI provider to upload the recording also if the pipeline has failed.
+In this example after the general steps (checkout, install Node.js) are running the end-to-end tests as usual via `jest-playwright` (we call Jest in the `package.json` script section) will be triggered via `npm run test:e2e`. By adding the if condition to the action for uploading the artifacts, we instruct the CI provider to upload the recording also if the pipeline has failed. You then can download the file once you open the GitHub Action run on GitHub itself. For more information check out the official action to upload files [actions/checkout](https://github.com/actions/upload-artifact#where-does-the-upload-go) on GitHub.
 
 ---
 
