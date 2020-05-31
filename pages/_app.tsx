@@ -16,7 +16,7 @@ const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta
       <h1 className="font-bold text-gray-800 hover:text-gray-700 text-4xl">
         {meta.title}
       </h1>
-      <p className="text-lg text-gray-600">
+      <p className="text-lg text-gray-600 text-center" style={{ maxWidth: "90%" }}>
         {meta.description}
       </p>
     </div>

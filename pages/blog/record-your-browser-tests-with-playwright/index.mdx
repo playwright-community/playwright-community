@@ -91,7 +91,7 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses:
     - name: Use Node.js
       uses: actions/setup-node@v1
       with:
@@ -108,7 +108,7 @@ jobs:
         path: recording.mp4
 ```
 
-In this example after the general steps (checkout, install Node.js) are running the end-to-end tests as usual via `jest-playwright` (we call Jest in the `package.json` script section) will be triggered via `npm run test:e2e`. By adding the if condition to the action for uploading the artifacts, we instruct the CI provider to upload the recording also if the pipeline has failed.
+In this example after the general steps (checkout, install Node.js) are running the end-to-end tests as usual via `jest-playwright` (we call Jest in the `package.json` script section) will be triggered via `npm run test:e2e`. By adding the if condition to the action for uploading the artifacts, we instruct the CI provider to upload the recording also if the pipeline has failed. You then can download the file once you open the GitHub Action run on GitHub itself. For more information check out the official action to upload files [actions/checkout](https://github.com/actions/upload-artifact#where-does-the-upload-go) on GitHub.
 
 ---
 
