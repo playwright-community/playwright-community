@@ -13,7 +13,7 @@ interface BlogWrapperProps {
 const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta }) => <MainLayout title={meta.title} description={meta.description} image={meta.image}>
   <header className="px-3">
     <div className="flex flex-col items-center py-4">
-      <h1 className="font-bold text-gray-800 hover:text-gray-700 text-4xl">
+      <h1 className="font-bold text-gray-800 hover:text-gray-700 text-4xl text-center">
         {meta.title}
       </h1>
       <p className="text-lg text-gray-600 text-center" style={{ maxWidth: "90%" }}>
