@@ -9,7 +9,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title, description, image }) => {
-    const fullTitle = `${title} - Playwright Community`
+    const fullTitle = `${title} - Playwright Community 🎭`
     const baseURL = "https://" + (process.env.VERCEL_URL || "")
     return (
         <>
@@ -35,7 +35,7 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                         <span>
                             <Link href="/">
                                 <a className="hover:text-gray-200">
-                                    Playwright Community
+                                    Playwright Community 🎭
                                 </a>
                             </Link>
                         </span>
