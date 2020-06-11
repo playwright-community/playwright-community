@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import  * as playwright from 'playwright-aws-lambda';
-import { getAbsoluteURL } from 'pages/utils/utils';
+import { getAbsoluteURL } from 'utils/utils';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const browser = await playwright.launchChromium();

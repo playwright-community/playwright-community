@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { getAbsoluteURL } from 'pages/utils/utils'
+import { getAbsoluteURL } from 'utils/utils'
 
 
 interface MainLayoutProps {
