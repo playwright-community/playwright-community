@@ -1,4 +1,4 @@
-import { MDXProvider } from '@mdx-js/react'
+import { MDXProvider, MDXProviderComponentsProp } from '@mdx-js/react'
 import Highlight, { defaultProps, Language } from 'prism-react-renderer'
 import theme from "prism-react-renderer/themes/github";
 
@@ -55,7 +55,7 @@ const CodeBlock: React.FunctionComponent<CodeBlockProps> = ({ children, classNam
   )
 }
 
-const components = {
+const components: MDXProviderComponentsProp = {
   wrapper: BlogWrapper,
   a: CustomLink,
   p: ({ ...props }) => <p className="my-3" {...props} />,

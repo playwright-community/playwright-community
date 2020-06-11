@@ -1,6 +1,9 @@
 import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { getAbsoluteURL } from 'pages/utils/utils'
+
 
 interface MainLayoutProps {
     title: string
@@ -10,7 +13,13 @@ interface MainLayoutProps {
 
 const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title, description, image }) => {
     const fullTitle = `${title} - Playwright Community 🎭`
-    const baseURL = "https://" + (process.env.VERCEL_URL || "")
+    const router = useRouter()
+    if (!image) {
+        const searchParams = new URLSearchParams()
+        searchParams.set("path", router.pathname)
+        image = `/api/thumbnail?${searchParams}`
+    }
+    const fullImageURL = getAbsoluteURL(image)
     return (
         <>
             <Head>
@@ -22,10 +31,8 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                 <meta property="og:type" content="website" />
                 <meta property="og:description" content={description} />
                 <meta name="twitter:card" content="summary" />
-                {image && <>
-                    <meta property="og:image" content={baseURL + image} />
-                    <meta name="twitter:image" content={baseURL + image} />
-                </>}
+                <meta property="og:image" content={fullImageURL} />
+                <meta name="twitter:image" content={fullImageURL} />
                 <meta property="twitter:title" content={fullTitle} />
                 <meta property="twitter:description" content={description} />
             </Head>
