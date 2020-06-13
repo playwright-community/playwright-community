@@ -35,7 +35,7 @@ const Index: NextPage<IndexProps> = ({
                     <span className="text-blue-700 text-sm font-bold uppercase pb-4">{post.tags.join(", ")}</span>
                     <span className="text-3xl font-bold hover:text-gray-700 pb-4">{post.title}</span>
                     <span className="text-sm pb-3">
-                      By <span className="font-semibold hover:text-gray-800">{post.author}</span>, Published on {new Date(post.date).toLocaleDateString()}
+                      By <span className="font-semibold hover:text-gray-800">{post.author}</span>, Published on {new Date(post.date).toLocaleDateString("en-US")}
                     </span>
                     <span className="pb-6">{post.description}</span>
                     <span className="uppercase text-gray-800 hover:text-black">Continue Reading <i className="fas fa-arrow-right"></i></span>

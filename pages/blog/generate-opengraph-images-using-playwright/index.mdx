@@ -1,0 +1,95 @@
+export const meta = {
+  title: 'Generate Open Graph images on-demand with Next.js on Vercel',
+  description: "Demonstration on how you can use Playwright to create thumbnails of your web pages (e.g. blog) as e.g. Twitter preview image (og:image) built with Next.js",
+  author: "Max Schmitt",
+  date: "2020-06-15",
+  tags: ["next.js", "thumbnail", "showcase"]
+}
+
+#### Introduction
+
+Images in social media like Twitter or Facebook are very important to give the user directly an overview of your content, topics, and a preview of it. Designing this manually takes usually time and knowledge in photo editing software like Adobe Photoshop or Gimp. In this tutorial, we'll cover, how to generate automatically preview thumbnails using Playwright and the Next.js framework. In general, this technique is framework agnostic and can be used with other alternative frameworks which support serverless functions.
+
+#### Integration
+
+The concept needs to be integrated into two parts of your application. The main layout or component that renders your pages needs to reference to your AWS Lambda function path. Due to the requirement of Twitter, that they need a full URL, we have to prefix the path with it.
+
+```js
+// Vercel specific
+const getAbsoluteURL = (path) => {
+  const baseURL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
+  return baseURL + path
+}
+```
+
+Then we determine the path of the current page by using the [`useRouter`](https://nextjs.org/docs/api-reference/next/router#userouter) React hook, this will be passed over to the servless function via a GET parameter. Also this component has the option to pass an existing image as a prop over which will be preferred to only use the generated screenshot as a fallback.
+
+```js
+const MyComponent = ({ image }) => {
+    const router = useRouter()
+    if (!image) {
+        const searchParams = new URLSearchParams()
+        searchParams.set("path", router.pathname)
+        image = `/api/thumbnail?${searchParams}`
+    }
+    // Open Graph & Twitter images need a full URL including domain
+    const fullImageURL = getAbsoluteURL(image)
+    return (
+        <Head>
+            <meta property="og:image" content={fullImageURL} />
+            <meta name="twitter:image" content={fullImageURL} />
+        </Head>
+    )
+}
+```
+
+The last step is to use something like [`react-helmet`](https://github.com/nfl/react-helmet) or [`next/head`](https://nextjs.org/docs/api-reference/next/head) for Next.js to write the full image URL to the DOM.
+
+#### Serverless function
+
+Since the page is now referencing from the content over to the AWS Lamda function, we have to implement the automated screenshot generation. Currently, the only way for using Playwright on AWS Lamda is to use the [`playwright-aws-lambda`](https://github.com/JupiterOne/playwright-aws-lambda) package which uses a custom-built Chromium version under the hood.
+
+*Serverless functions* are a standardized way of exporting an HTTP handler in a file which then will be available by the given file path. They are available in plenty of languages including Node.js, Go, and Python.
+
+```js
+import * as playwright from 'playwright-aws-lambda';
+import { getAbsoluteURL } from 'utils/utils';
+
+export default async (req, res) => {
+  // Start the browser with the AWS Lambda wrapper (playwright-aws-lambda)
+  const browser = await playwright.launchChromium();
+  // Create a page with the Open Graph image size best practise
+  const page = await browser.newPage({
+    viewport: {
+      width: 1200,
+      height: 630
+    }
+  });
+  // Generate the full URL out of the given path (GET parameter)
+  const url = getAbsoluteURL(req.query["path"] || "")
+  await page.goto(url, {
+    timeout: 15 * 1000
+  })
+  const data = await page.screenshot({
+    type: "png"
+  })
+  await browser.close()
+  // Set the s-maxage property which caches the images then on the Vercel edge
+  res.setHeader("Cache-Control", "s-maxage=31536000, stale-while-revalidate")
+  res.setHeader('Content-Type', 'image/png')
+  // write the image to the response with the specified Content-Type
+  res.end(data)
+}
+```
+
+The Serverless function will in a nutshell launch the special Chromium instance, navigate to the given URL, create a screenshot, and then writes it to the response.
+
+The entire source code for the [page header](https://github.com/playwright-community/playwright-community/blob/e747e467a66d81a95f4013f683f7306050da70ad/layouts/main.tsx#L16-L21) and the [Serverless function](https://github.com/playwright-community/playwright-community/blob/e747e467a66d81a95f4013f683f7306050da70ad/pages/api/thumbnail.ts#L1-L24) is available on [GitHub](https://github.com/playwright-community/playwright-community).
+
+#### Outcome
+
+<img src="/blog/generate-opengraph-images-using-playwright/example-card.png" style={{maxWidth: 500}}/>
+
+To summarize it, we created now the logic to generate dynamic Open Graph thumbnail images which will be generated on-demand if no custom image was given. They are automatically updated and cached on the edge of Vercel's webservers and look like the example above in our case.
+
+Currently, it's only possible to use Chromium with a third-party library on AWS Lambda out of the box. For more information about the further progress, see [here](https://github.com/microsoft/playwright/issues/2404) in the GitHub issue.
