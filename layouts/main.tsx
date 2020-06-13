@@ -30,11 +30,11 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                 <meta property="og:title" content={fullTitle} />
                 <meta property="og:type" content="website" />
                 <meta property="og:description" content={description} />
-                <meta name="twitter:card" content="summary" />
                 <meta property="og:image" content={fullImageURL} />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={fullTitle} />
+                <meta name="twitter:description" content={description} />
                 <meta name="twitter:image" content={fullImageURL} />
-                <meta property="twitter:title" content={fullTitle} />
-                <meta property="twitter:description" content={description} />
             </Head>
             <nav className="w-full py-4 px-3 shadow" style={{ backgroundColor: "#169de0" }}>
                 <div className="w-full container mx-auto items-center justify-between">
