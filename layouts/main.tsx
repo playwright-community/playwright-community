@@ -42,7 +42,7 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                         <span>
                             <Link href="/">
                                 <a className="hover:text-gray-200">
-                                    Playwright Community 🎭
+                                    🎭 Playwright Community
                                 </a>
                             </Link>
                         </span>
@@ -63,6 +63,9 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                         ©
                         <a href="https://connect.schmitt.mx" className="ml-1">
                             Max Schmitt
+                        </a> —
+                        <a href="https://github.com/playwright-community/playwright-community" className="ml-1">
+                            View Source
                         </a>
                     </div>
                 </div>
