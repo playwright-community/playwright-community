@@ -25,7 +25,7 @@ const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta
     By <span className="font-semibold hover:text-gray-800">
       {meta.author}
     </span>
-    , Published on {new Date(meta.date).toLocaleDateString()}
+    , Published on {new Date(meta.date).toLocaleDateString("en-US")}
   </p>
   {children}
 </MainLayout>

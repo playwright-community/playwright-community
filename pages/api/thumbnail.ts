@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import  * as playwright from 'playwright-aws-lambda';
+import * as playwright from 'playwright-aws-lambda';
+
 import { getAbsoluteURL } from 'utils/utils';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -17,8 +18,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const data = await page.screenshot({
     type: "png"
   })
-  setTimeout(() => browser.close(), 0)
-  res.setHeader("cache-control", "s-maxage=31536000, stale-while-revalidate")
+  await browser.close()
+  res.setHeader("Cache-Control", "s-maxage=31536000, stale-while-revalidate")
   res.setHeader('Content-Type', 'image/png')
   res.end(data)
 }
