@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { getAbsoluteURL } from 'utils/utils'
+import PlaywrightIcon from 'components/PlaywrightIcon'
 
 
 interface MainLayoutProps {
@@ -42,7 +43,8 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                         <span>
                             <Link href="/">
                                 <a className="hover:text-gray-200">
-                                    🎭 Playwright Community
+                                    <PlaywrightIcon />
+                                    Playwright Community
                                 </a>
                             </Link>
                         </span>

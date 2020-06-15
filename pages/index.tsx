@@ -2,6 +2,7 @@ import MainLayout from '../layouts/main'
 import { Meta } from 'types/blog'
 import Link from 'next/link'
 import type { NextPage } from 'next';
+import PlaywrightIcon from 'components/PlaywrightIcon';
 
 interface IndexProps {
   posts: (Meta & {
@@ -18,7 +19,8 @@ const Index: NextPage<IndexProps> = ({
         <header>
           <div className="flex flex-col items-center py-12">
             <h1 className="font-bold text-gray-800 hover:text-gray-700 text-4xl">
-              🎭 Playwright Community
+              <PlaywrightIcon />
+               Playwright Community
             </h1>
             <p className="text-lg text-gray-600 text-center">
               A central home for tutorials, tooling, and showcases of the Playwright ecosystem.
