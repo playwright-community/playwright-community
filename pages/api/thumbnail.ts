@@ -45,7 +45,7 @@ const loadFont = (input: string) => new Promise(async (resolve, reject) => {
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   await loadFont("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf")
   process.env.FONTCONFIG_PATH = FONTS_DIR
-  console.log("Set", FONTS_DIR)
+
   const browser = await playwright.launchChromium();
   const page = await browser.newPage({
     viewport: {
