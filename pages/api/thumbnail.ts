@@ -18,6 +18,13 @@ const loadFont = (input: string) => new Promise(async (resolve, reject) => {
     return
   }
   await promisify(fs.mkdir)(FONTS_DIR);
+  await promisify(fs.writeFile)(path.join(FONTS_DIR, "fonts.conf"), `<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <dir>${FONTS_DIR}</dir>
+  <cachedir>/tmp/fonts-cache/</cachedir>
+  <config></config>
+</fontconfig>`)
   const stream = fs.createWriteStream(output);
   stream.once('error', (error) => {
     return reject(error);
