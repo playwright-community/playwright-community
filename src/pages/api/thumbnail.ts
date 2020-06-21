@@ -49,8 +49,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const browser = await playwright.launchChromium();
   const page = await browser.newPage({
     viewport: {
-      width: 1200,
-      height: 630
+      width: 1500,
+      height: 1200
     }
   });
   const url = getAbsoluteURL(req.query["path"] as string || "")
