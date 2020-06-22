@@ -39,7 +39,7 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
             </Head>
             <nav className="w-full py-4 px-3 shadow" style={{ backgroundColor: "#169de0" }}>
                 <div className="w-full container mx-auto items-center justify-between">
-                    <ul className="flex items-center justify-between font-bold text-sm text-white uppercase no-underline">
+                    <div className="flex items-center justify-between font-bold text-sm text-white uppercase no-underline">
                         <span>
                             <Link href="/">
                                 <a className="hover:text-gray-200">
@@ -52,7 +52,7 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                             <a className="hover:text-gray-200 hover:underspan px-5 hidden md:inline" href="https://try.playwright.tech">Try Playwright</a>
                             <a className="hover:text-gray-200 hover:underspan float-right" href="https://github.com/microsoft/playwright">Playwright on GitHub</a>
                         </span>
-                    </ul>
+                    </div>
                 </div>
             </nav>
 

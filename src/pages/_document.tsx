@@ -8,7 +8,7 @@ class MyDocument extends Document<MyDocumentProps> {
     static async getInitialProps(ctx: DocumentContext) {
         const isProduction = process.env.NODE_ENV === 'production';
         const initialProps = await Document.getInitialProps(ctx)
-        return { ...initialProps, isProduction }
+        return { ...initialProps, isProduction, unstable_runtimeJS: false }
     }
 
     getGoogleTags() {
@@ -24,7 +24,7 @@ class MyDocument extends Document<MyDocumentProps> {
     render() {
         const { isProduction } = this.props
         return (
-            <Html>
+            <Html lang="en">
                 <Head />
                 <body>
                     <Main />
