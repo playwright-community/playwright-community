@@ -29,21 +29,15 @@ const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta
   </p>
   {children}
   <hr />
-  <section
-    ref={elem => {
-      if (!elem) {
-        return;
-      }
-      const scriptElem = document.createElement("script");
-      scriptElem.src = "https://utteranc.es/client.js";
-      scriptElem.async = true;
-      scriptElem.crossOrigin = "anonymous";
-      scriptElem.setAttribute("repo", "playwright-community/playwright-community");
-      scriptElem.setAttribute("issue-term", "pathname");
-      scriptElem.setAttribute("label", "blog-comment");
-      elem.appendChild(scriptElem);
-    }}
-  />
+  <script
+    src="https://utteranc.es/client.js" // @ts-ignore
+    repo="playwright-community/playwright-community"
+    issue-term="pathname"
+    theme="github-light"
+    crossOrigin="anonymous"
+    label="blog-comment"
+    async
+  ></script>
 </MainLayout>
 
 const CustomLink: React.FunctionComponent = ({ ...props }) => <a {...props} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" />
