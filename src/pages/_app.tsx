@@ -84,6 +84,7 @@ const components: MDXProviderComponentsProp = {
   h4: ({ ...props }) => <h4 className="text-2xl" {...props} />,
   h5: ({ ...props }) => <h5 className="text-xl" {...props} />,
   h6: ({ ...props }) => <h6 className="text-lg" {...props} />,
+  pre: ({ children }) => children
 }
 
 const MyApp = ({ Component, pageProps }) => <MDXProvider components={components}>

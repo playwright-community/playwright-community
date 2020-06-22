@@ -24,7 +24,7 @@ class MyDocument extends Document<MyDocumentProps> {
     render() {
         const { isProduction } = this.props
         return (
-            <Html>
+            <Html lang="en">
                 <Head />
                 <body>
                     <Main />
