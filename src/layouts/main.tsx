@@ -68,6 +68,17 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                         </a> —
                         <a href="https://github.com/playwright-community/playwright-community" className="ml-1">
                             View Source
+                        </a> —
+                        <a
+                            href="https://vercel.com?utm_source=playwright-community"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Powered by{' '}
+                            <img src="/vercel.svg" alt="Vercel Logo" style={{
+                                display: "inline",
+                                height: 20
+                            }} />
                         </a>
                     </div>
                 </div>
