@@ -9,7 +9,7 @@ export const meta = {
   image: openGraphImage
 }
 
-### Introduction
+## Introduction
 
 <div className="float-right m-1">
   <img src={openGraphImage} style={{maxHeight: 160}}/>
@@ -22,7 +22,7 @@ The way how you should integrate Playwright into your project depends on your ne
 - [jest-dev-server](http://yarnpkg.com/en/package/jest-dev-server) integration which can start your webserver like create-react-app before running the tests
 - [expect-playwright](https://github.com/playwright-community/expect-playwright) integration which provides common `expect` helper functions
 
-### Using `jest-playwright`
+## Using `jest-playwright`
 
 To get started we first have to install the needed Node.js packages either over NPM or Yarn. It's common to install them as `devDependencies` so they won't be installed on your production environments.
 
@@ -85,7 +85,7 @@ File handling
 
 For more information about `jest-playwright`, you'll find the full documentation on [GitHub](https://github.com/playwright-community/jest-playwright).
 
-### Using it from scratch
+## Using it from scratch
 
 As you can see in the following code, we use the lifecycle hooks to launch a browser before all the tests which run and close them once all are done. For every test `beforeEach` will create a new page as a global variable which will be used inside the tests. In this example we are visiting example.com and testing if the title of it contains `Example Domain`.
 
@@ -113,7 +113,7 @@ it('should work', async () => {
 
 In the creation of the browser (`chromium.launch`) or the creation of the page (`browser.newPage`) you can passs options e.g. to start the browser as headful instead of headless to manually click around or to ignore invalid SSL certificates which is useful for local testing.
 
-### Writing tests
+## Writing tests
 
 Once you have a setup in place, you can then follow up by using tools like [`expect-playwright`](https://github.com/playwright-community/expect-playwright) (pre-installed with jest-playwright) which gives you a few utility methods on your Jest matching class to use it like that:
 

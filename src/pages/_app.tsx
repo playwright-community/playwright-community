@@ -73,11 +73,11 @@ const components: MDXProviderComponentsProp = {
   code: CodeBlock,
   inlineCode: ({ ...props }) => <code className="bg-gray-100 px-1 text-purple-600" {...props} />,
   h1: ({ ...props }) => <h1 className="text-5xl" {...props} />,
-  h2: ({ ...props }) => <h2 className="text-4xl" {...props} />,
-  h3: ({ ...props }) => <h3 className="text-3xl" {...props} />,
-  h4: ({ ...props }) => <h4 className="text-2xl" {...props} />,
-  h5: ({ ...props }) => <h5 className="text-xl" {...props} />,
-  h6: ({ ...props }) => <h6 className="text-lg" {...props} />,
+  h2: ({ ...props }) => <h2 className="text-3xl" {...props} />,
+  h3: ({ ...props }) => <h3 className="text-2xl" {...props} />,
+  h4: ({ ...props }) => <h4 className="text-xl" {...props} />,
+  h5: ({ ...props }) => <h5 className="text-lg" {...props} />,
+  h6: ({ ...props }) => <h6 className="text-base" {...props} />,
   pre: ({ children }) => children
 }
 

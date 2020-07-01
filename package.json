@@ -26,6 +26,6 @@
     "postcss-preset-env": "^6.7.0",
     "prism-react-renderer": "^1.1.1",
     "tailwindcss": "^1.4.6",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.6"
   }
 }
