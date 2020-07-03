@@ -1,0 +1,66 @@
+export const meta = {
+  title: 'Automate Microsoft Edge and Google Chrome with Playwright',
+  description: "Control Chromium-based browsers like Google Chrome, Microsoft Edge, or Brave with Node.js.",
+  author: "Max Schmitt",
+  date: "2020-07-03",
+  tags: ["microsoft edge", "google chrome", "chromium"]
+}
+
+## Introduction
+
+Testing a web application with end-to-end tests on the actually supported browsers is a real benefit to ensure that the application works as expected for example directly in the Continuous Integration workflow before it is merged and deployed. Playwright provides already full support for Chromium, Firefox, and WebKit out of the box without installing the browsers manually, but since most of the users out there use Google Chrome or Microsoft Edge instead of the Open Source Chromium variant, it's in some scenarios safer to use them to emulate a more real-life browser environment.
+
+## General
+
+Since these browsers are based on the Chromium browser, Playwright interacts with them over the [Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/) to open new tabs, click on elements or execute JavaScript. Due to this core requirement, we have to use a recent version (daily build - Canary) of them to ensure that the needed APIs schemas are matching and existing. To use them we have to only adjust the [executable path](https://playwright.dev/#version=v1.1.1&path=docs%2Fapi.md&q=browsertypelaunchoptions--options-executablepath) option which Playwright will use to launch the browsers.
+
+On macOS systems, the browsers are installed in the `/Applications` directory, where you have inside the related binaries. For Linux, the browsers are commonly installed in the `/usr/bin` directory, you'll find some examples below. On Windows systems, the browsers are installed in the `C:\Program Files (x86)\` directory.
+
+- `/Applications/Microsoft\ Edge\ Canary.app/Contents/MacOS/Microsoft\ Edge\ Canary` - Microsoft Edge Canary on macOS
+- `/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary` - Google Chrome Canary on macOS
+- `/usr/bin/google-chrome-unstable` - Google Chrome Canary on Ubuntu
+- `C:\Users\<username>\AppData\Local\Google\Chrome SxS\Application\chrome.exe` - Google Chrome Canary on Windows
+- `/Applications/Brave Browser Nightly.app/Contents/MacOS/Brave Browser Nightly` - Brave Nightly on macOS
+
+## Browsers
+
+```js
+const playwright = require("playwright-core");
+
+(async () => {
+  const browser = await playwright.chromium.launch({
+    headless: false,
+    executablePath: `/Applications/Microsoft\ Edge\ Canary.app/Contents/MacOS/Microsoft\ Edge\ Canary`
+  })
+  const page = await browser.newPage()
+  await page.setContent(`<input id="foo">`)
+  await page.type("#foo", "keksstar")
+  console.log(await page.content())
+  await page.screenshot({ path: "screenshot.png" })
+  console.log(await page.evaluate(() => window.navigator.userAgent))
+  // -> 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.0 Safari/537.36 Edg/85.0.563.0'
+  await browser.close()
+})()
+```
+
+In the next couple of examples, we're gonna focus on the different browsers, which operating systems they support, where you can download them, and what executable path you need to set. This example demonstrates the basic usage by specifying the `executablePath` which launches Microsoft Edge instead of the normal Chromium. Also, we're using the [`playwright-core`](https://www.npmjs.com/package/playwright-core) package, which only installs the library instead of downloading the browsers which we don't need in our case.
+
+### Google Chrome
+
+Google Chrome is available for all the major operating systems and can be downloaded on the [official website](https://www.google.com/chrome/canary/). To use Playwright, we need a recent **Canary build**. For Linux, it is common to install it via their APT repository, see e.g. this [guide](https://askubuntu.com/a/510186) also keep in mind then to install the Canary variant: `apt install google-chrome-unstable`
+
+### Microsoft Edge
+
+Microsoft Edge is only available for macOS and Windows and can be downloaded on the [official website](https://www.microsoftedgeinsider.com/download/canary/). Until now (Mid 2020) no Linux build was released. (It was announced in 2019 and confirmed the existence in Mid 2020 on their yearly Microsoft Build 2020 conference.) To use Playwright, we need a recent **Canary build**.
+
+### Brave
+
+Brave itself does not rely on the official Chromium release schedule, that's why their latest versions are not the same as Chromium. Because of that it's not guaranteed, that all Playwright functionality is working out of the box. If you want to still try it out, you can obtain their **Nightly version** on their [official website](https://brave.com/de/download-nightly/).
+
+### Other Chromium browsers
+
+Other popular Chromium-based browsers like **Vivaldi** and **Opera** are not yet working which is tracked in [this](https://github.com/microsoft/playwright/issues/647#issuecomment-652664342) GitHub issue. For Firefox and WebKit, you have to use the attached
+
+## Summary
+
+In this blog article, we went through an overview of how to use other Chromium-based browsers and control them with the Playwright library. We strongly advise, that these browsers will only be used when you need to test a very specific browser feature. For follow up usage and documentation about Playwright features, you'll find more on their official website [playwright.dev](https://playwright.dev).

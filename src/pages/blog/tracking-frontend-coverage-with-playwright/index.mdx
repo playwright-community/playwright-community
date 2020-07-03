@@ -6,21 +6,21 @@ export const meta = {
   tags: ["jest", "coverage", "tutorial"]
 }
 
-### Introduction
+## Introduction
 
-End-to-End tests play a critical role in modern software development nowadays. As Guillermo Rauch (CEO of Vercel, formerly ZEIT) outlined in his [last blog article](https://rauchg.com/2020/develop-preview-test) about software development, software engineering teams attend to prioritize and implement End-to-End tests over normal unit tests. As an example, they start the real application setup and their dependencies to use it as a real user by browser emulation instead of testing e.g. React components and comparing input and output of them. Especially integrated into the Continous Integration lifecycle with a CI provider like GitHub Actions ensures always, that the End-to-End tests are passing before they are merged and deployed to production.
+End-to-End tests play a critical role in modern software development nowadays. As Guillermo Rauch (CEO of Vercel, formerly ZEIT) outlined in his [last blog article](https://rauchg.com/2020/develop-preview-test) about software development, software engineering teams attend to prioritize and implement End-to-End tests over normal unit tests. As an example, they start the real application setup and their dependencies to use it as a real user by browser emulation instead of testing e.g. React components and comparing input and output of them. Especially integrated into the Continuous Integration lifecycle with a CI provider like GitHub Actions ensures always, that the End-to-End tests are passing before they are merged and deployed to production.
 
 With this mindset, its especially good for the team to have a way to track the actual coverage down to the code level, to see which functions and pages were executed with the End-to-End tests in our case with Playwright. Doing this manually is very time inefficient and error-prone. So we are focusing in this article, what tools and components you need, to automatically track the coverage and send it to your preferred coverage visualization provider like Codecov or Coveralls to have it visualized it like [here](https://coveralls.io/builds/31569579/source?filename=create-react-app-coverage/src/App.tsx) on Coveralls.
 
 <img src="/blog/tracking-frontend-coverage-with-playwright/coverage.png" alt="End-to-End test coverage on Coveralls" />
 
-### Overview
+## Overview
 
 There are multiple ways, to get the coverage data of your tests, you can use the [Chrome specific coverage tracking feature](https://playwright.dev/#version=v1.1.1&path=docs%2Fapi.md&q=class-chromiumcoverage), which gets the coverage data directly from the V8 runtime, but this is browser-specific and has no support for 1:many source-maps if e.g. your bundle is minified it wouldn't yet work, see [here](https://github.com/istanbuljs/v8-to-istanbul/issues/21) for more information.
 
 In this tutorial, we are focusing on the usage with the Babel plugin [babel-plugin-istanbul](https://github.com/istanbuljs/babel-plugin-istanbul) which you have to add during the build process (transcompilation) to your project. This will hold then the coverage data in a global variable called `__coverage__` on the window object. Jest-Playwright, will automatically take care of storing and merging the coverage data. If you want to do it manually, you have to store it after each reload and page navigation because it's stored on the Window object which is not persistent.
 
-### Setting up Babel
+## Setting up Babel
 
 The configuration with Babel depends on each application. In general its framework agnostic, so it can be used with e.g. React, Vue or Angular. In our example, we are using a React application with `create-react-app` which per default does not accept any additional Babel plugins, that's why we have to use a third-party tool called [react-app-rewired](https://github.com/timarney/react-app-rewired#how-to-rewire-your-create-react-app-project) to make it configurable. So in this case we have to create a file called `config-overrides.js`, to add the [babel-plugin-istanbul](https://github.com/istanbuljs/babel-plugin-istanbul) plugin there. See [here](https://github.com/playwright-community/playwright-jest-examples/blob/master/create-react-app-coverage/config-overrides.js) for the full file on GitHub and [here](https://github.com/timarney/react-app-rewired#how-to-rewire-your-create-react-app-project) for getting started with react-app-rewired.
 
@@ -36,7 +36,7 @@ module.exports = override(
 
 It's common to only add the babel plugin when you actually need the coverage information, for that we have there the test on the `E2E_TESTS` environment variable in place which we only set, when we bundle the web application for the end-to-end tests.x
 
-### Setting up jest-playwright
+## Setting up jest-playwright
 
 `jest-playwright` acts as a Jest environment which provides a Playwright [Page](https://playwright.dev/#version=v1.1.1&path=docs%2Fapi.md&q=class-page) instance for each test. After installing it with:
 
@@ -54,7 +54,7 @@ module.exports = {
 
 For a full reference for `jest-playwright` check out the official [docs](https://github.com/playwright-community/jest-playwright#readme). Its also recommended using a separate Jest configuration for the e2e tests.
 
-### Collecting coverage with jest-playwright
+## Collecting coverage with jest-playwright
 
 `jest-playwright` will provide a method for saving the test coverage after each test and merging it after all the tests are completed. First you have to enable the coverage collection in the configuration in the `jest-playwright.config.js` file as follows:
 
@@ -102,13 +102,13 @@ At that point, you can run your tests as usual with the `jest` command which is 
 
 The output will be placed under the `.nyc_output/coverage.json` path, so it can be consumed using the [Istanbul command line interface](https://github.com/istanbuljs/nyc#readme).
 
-### Visualize it using NYC
+## Visualize it using NYC
 
 Once this is done, you can directly work with your coverage data by using the `npx nyc report --reporter=html` command which will create an HTML website in the `coverage` directory. You can then open the `coverage/index.html` file with your favorite browser to analyse it which will look in our example like as follows.
 
 <img src="/blog/tracking-frontend-coverage-with-playwright/istanbul.png" alt="Istanbul HTML coverage report" />
 
-### Uploading it to Coveralls/Codecov
+## Uploading it to Coveralls/Codecov
 
 It depends now on the coverage provider. Coveralls for example needs the `lcov` data format which is different from the format which we have generated (`coverage.json`). By using the `nyc report --reporter=lcovonly` command you can convert it to the lcov data format which will save the file under `coverage/lcov.info`. It's also useful to add it with the `&&` syntax in the script section of your package.json to always generate the lcov data after running the test command.
 
@@ -119,6 +119,6 @@ It also depends on the CI provider of your choice to upload it to the coverage p
 - [Coveralls GitHub Action](https://github.com/marketplace/actions/coveralls-github-action)
 - [Codecov GitHub Action](https://github.com/marketplace/actions/codecov)
 
-### Summary
+## Summary
 
 In this tutorial, we went through the setup which is required to configure Playwright and Jest for storing and merging the coverage data of your End-to-End tests. You'll find the full repository [on GitHub](https://github.com/playwright-community/playwright-jest-examples/tree/master/create-react-app-coverage) as a reference on GitHub.

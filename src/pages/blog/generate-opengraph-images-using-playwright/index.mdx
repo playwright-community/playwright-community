@@ -6,11 +6,11 @@ export const meta = {
   tags: ["next.js", "thumbnail", "showcase"]
 }
 
-### Introduction
+## Introduction
 
 Images in social media like Twitter or Facebook are very important to give the user directly an overview of your content, topics, and a preview of it. Designing this manually takes usually time and knowledge in photo editing software like Adobe Photoshop or Gimp. In this tutorial, we'll cover, how to generate automatically preview thumbnails using Playwright and the Next.js framework. In general, this technique is framework agnostic and can be used with other alternative frameworks which support serverless functions.
 
-### Integration
+## Integration
 
 The concept needs to be integrated into two parts of your application. The main layout or component that renders your pages needs to reference to your AWS Lambda function path. Due to the requirement of Twitter, that they need a full URL, we have to prefix the path with it. In Vercel, you have to manually add the `VERCEL_URL` environment variable to your project for building the full URL.
 
@@ -45,7 +45,7 @@ const MyComponent = ({ image }) => {
 
 The last step is to use something like [`react-helmet`](https://github.com/nfl/react-helmet) or [`next/head`](https://nextjs.org/docs/api-reference/next/head) for Next.js to write the full image URL to the DOM.
 
-### Serverless function
+## Serverless function
 
 Since the page is now referencing from the content over to the AWS Lamda function, we have to implement the automated screenshot generation. Currently, the only way for using Playwright on AWS Lamda is to use the [`playwright-aws-lambda`](https://github.com/JupiterOne/playwright-aws-lambda) package which uses a custom-built Chromium version under the hood.
 
@@ -86,7 +86,7 @@ The Serverless function will in a nutshell launch the special Chromium instance,
 
 The entire source code for the [page header](https://github.com/playwright-community/playwright-community/blob/e747e467a66d81a95f4013f683f7306050da70ad/layouts/main.tsx#L16-L21) and the [Serverless function](https://github.com/playwright-community/playwright-community/blob/e747e467a66d81a95f4013f683f7306050da70ad/pages/api/thumbnail.ts#L1-L24) is available on [GitHub](https://github.com/playwright-community/playwright-community).
 
-### Outcome
+## Outcome
 
 <img src="/blog/generate-opengraph-images-using-playwright/example-card.png" style={{maxHeight: 400}}/>
 
