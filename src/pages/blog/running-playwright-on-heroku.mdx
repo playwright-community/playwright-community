@@ -1,0 +1,55 @@
+export const meta = {
+  title: 'Using Playwright on Heroku',
+  description: "Setup and usage of the Playwright Heroku buildpack to run Chromium and Firefox on the Heroku Ubuntu stack.",
+  author: "Max Schmitt",
+  date: "2020-07-08",
+  tags: ["heroku", "setup", "tutorial"],
+  hidden: true
+}
+
+## Introduction
+
+Simplifying the deployment process nowadays of an application is a huge benefit to focus on the actual development instead of DevOps related tasks to create and configure a server for example. [Heroku](https://www.heroku.com) provides such a platform for running various tech stacks and languages easily and exposes them to the web which is called Platform as a Service (PaaS).
+
+Using Playwright will give the developer the possibility to either use Playwright on [Heroku CI](https://devcenter.heroku.com/articles/heroku-ci), a Continuous Integration provider by Heroku, or using it on the Heroku platform on a normal Dyno. They can then perform tasks like end-to-end testing or making preview images of web pages by starting a headless browser instance and making a screenshot.
+
+## Overview
+
+For the Heroku ecosystem, you need buildpacks, which can modify the system and hook into the compilation or test step of your application while it's building. For our case, we have to install the dependencies during the installation stage. Due to the requirement, that Heroku buildpacks are only allowed to modify the files inside the current working directory, the Playwright buildpack has to set an environment variable to store the browsers in the `node_modules` folder instead of a global directory.
+
+## Usage
+
+There is already a buildpack available, which configures the system for Playwright. It will as required install the dependencies and adjust the Playwright configuration by setting an environment variable. You'll find it on [GitHub](https://github.com/mxschmitt/heroku-playwright-buildpack).
+
+If you want to use this buildpack, set the buildpack URL in your application either via the CLI or the web interface.
+
+```
+heroku buildpacks:set https://github.com/mxschmitt/heroku-playwright-example -a my-app
+```
+
+It's important, that it's ordered before the Node.js buildpack, otherwise, the browsers won't be installed correctly.
+
+Also, you can then adjust the environment variables of your application and set the `PLAYWRIGHT_BUILDPACK_BROWSERS` environment variable to the browsers which you want to install. For example, `chromium` to install Chromium only and save by that slug size. If you want to install more, separate them by a comma. WebKit is currently not yet supported, see on [GitHub](https://github.com/mxschmitt/heroku-playwright-buildpack/issues/2) for more information about that.
+
+It's also common to only install the [browser-specific NPM packages](https://playwright.dev/#version=v1.1.1&path=docs%2Finstallation.md&q=download-single-browser-binary), which will reduce installation time and slug size on Heroku in the end.
+
+On the actual Playwright usage, it differs not much except that you have to run Chromium with the `--no-sandbox` argument because on Heroku there is the Chromium Sandbox not supported. For the full usage of Playwright, see on their official website [playwright.dev](https://playwright.dev).
+
+```js
+// Use the browser specific NPM package
+const { chromium } = require("playwright-chromium");
+
+(async () => {
+  // Start Chromium with the '--no-sandbox' argument
+  const browser = await chromium.launch({ args: ["--no-sandbox"] });
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  await page.goto('http://whatsmyuseragent.org/');
+  await page.screenshot({ path: `chromium.png` });
+  await browser.close();
+})();
+```
+
+## Summary
+
+In this tutorial, we went through how to set up your Heroku environment to install the needed Playwright dependencies. Now you can start using your own logic by controlling the browsers. A full example of how it will look like in the end, you'll find on [GitHub](https://github.com/mxschmitt/heroku-playwright-example).
