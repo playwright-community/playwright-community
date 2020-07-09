@@ -2,9 +2,8 @@ export const meta = {
   title: 'Using Playwright on Heroku',
   description: "Setup and usage of the Playwright Heroku buildpack to run Chromium and Firefox on the Heroku Ubuntu stack.",
   author: "Max Schmitt",
-  date: "2020-07-08",
+  date: "2020-07-11",
   tags: ["heroku", "setup", "tutorial"],
-  hidden: true
 }
 
 ## Introduction
@@ -24,7 +23,7 @@ There is already a buildpack available, which configures the system for Playwrig
 If you want to use this buildpack, set the buildpack URL in your application either via the CLI or the web interface.
 
 ```
-heroku buildpacks:set https://github.com/mxschmitt/heroku-playwright-example -a my-app
+heroku buildpacks:set https://github.com/mxschmitt/heroku-playwright-buildpack -a my-app
 ```
 
 It's important, that it's ordered before the Node.js buildpack, otherwise, the browsers won't be installed correctly.
@@ -33,7 +32,7 @@ Also, you can then adjust the environment variables of your application and set 
 
 It's also common to only install the [browser-specific NPM packages](https://playwright.dev/#version=v1.1.1&path=docs%2Finstallation.md&q=download-single-browser-binary), which will reduce installation time and slug size on Heroku in the end.
 
-On the actual Playwright usage, it differs not much except that you have to run Chromium with the `--no-sandbox` argument because on Heroku there is the Chromium Sandbox not supported. For the full usage of Playwright, see on their official website [playwright.dev](https://playwright.dev).
+On the actual Playwright usage, it differs not much except that you have to run Chromium with the `--no-sandbox` argument because on Heroku the Chromium Sandbox is not supported. For the full usage of Playwright, see on their official website [playwright.dev](https://playwright.dev).
 
 ```js
 // Use the browser specific NPM package
