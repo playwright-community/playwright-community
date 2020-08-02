@@ -1,0 +1,117 @@
+export const meta = {
+  title: 'Automate web browsers with Python and Playwright (beta)',
+  description: "Using Playwright to control Chromium, Firefox, or WebKit with Python and optional asyncio integration.",
+  author: "Max Schmitt",
+  date: "2020-08-04",
+  tags: ["python", "getting-started", "selenium"],
+  hidden: true
+}
+
+## Introduction
+
+In this article, we're gonna focus on the current state of using Playwright with Python. Playwright is a Node.js library to automate browsers (Chromium, Firefox, WebKit) with a single API which provides now also the interfaces to provide other cross-language support, in this particular blog post Python.
+
+In comparison to other automation libraries like Selenium, Playwright offers:
+- Being less flaky by auto-waiting for elements to be ready before executing actions (like click, fill)
+- Native support for emulating mobile devices, geolocation, and permissions
+- Better developer experience by automatically installing the browsers
+- Integrations for shadow-piercing selectors, native input events for mouse and keyboard or up-/downloading files
+
+And by that, all these features are also available in the Python integration. Be aware, that Playwright Python is currently **heavily under development** but exposes already most of the common methods and functions to be used. Since communication with browsers is mostly async based, Playwright does also provide an async based interface. It's a developer decision in the end but in most cases, the sync version is easier debuggable (ipdb, pdb, ipython does not work with await) and by that, your are more productive with writing your actual features.
+
+## Examples
+
+Since the core concept of Playwright is also the same as in the Python version, the function calls are mostly the same except how you access the Playwright object. For that, you have to use the sync_playwright context manager with a with statement.
+
+### Page screenshot - sync
+
+This code snippet navigates to whatsmyuseragent.org in Chromium, Firefox and WebKit, and saves 3 screenshots.
+
+```py
+from playwright import sync_playwright
+
+with sync_playwright() as p:
+    for browser_type in [p.chromium, p.firefox, p.webkit]:
+        browser = browser_type.launch()
+        page = browser.newPage()
+        page.goto('http://whatsmyuseragent.org/')
+        page.screenshot(path=f'example-{browser_type.name}.png')
+        browser.close()
+```
+
+### Evaluate in browser context - sync
+
+This code snippet navigates to example.com in Firefox and executes a script in the page context.
+
+```py
+from playwright import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.firefox.launch()
+    page = browser.newPage()
+    page.goto('https://www.example.com/')
+    dimensions = page.evaluate('''() => {
+      return {
+        width: document.documentElement.clientWidth,
+        height: document.documentElement.clientHeight,
+        deviceScaleFactor: window.devicePixelRatio
+      }
+    }''')
+    print(dimensions)
+    browser.close()
+```
+
+### Intercept network requests - async
+
+This code snippet sets up request routing for a Chromium page to log all network requests.
+
+```py
+import asyncio
+from playwright import async_playwright
+
+async def main():
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.newPage()
+
+        def log_and_continue_request(route, request):
+            print(request.url)
+            asyncio.create_task(route.continue_())
+
+        # Log and continue all network requests
+        await page.route('**', lambda route, request: log_and_continue_request(route, request))
+
+        await page.goto('http://todomvc.com')
+        await browser.close()
+
+asyncio.get_event_loop().run_until_complete(main())
+```
+
+## Pytest integration
+
+For writing actual end-to-end tests its common to use a test runner. In the Python world, Pytest is very common and we're using in our example the [Playwright integration](https://github.com/mxschmitt/pytest-playwright/) for it. Instead of using it manually, it provides features like:
+- Have a separate new page and context for each test with Pytest fixtures
+- Run your end-to-end tests on multiple browsers by a CLI argument
+- Run them headful with the --headful argument to debug them easily
+- Using base-url to only use the relative URL in your Page.goto calls
+
+It's Open Source available on [GitHub](https://github.com/mxschmitt/pytest-playwright/) and installable with PIP:
+```
+pip install pytest pytest-playwright
+```
+
+Pytest has the concept that you have fixtures that will pass the values inside which are specified by the parameter name. In our case, we use for that `page` which will call the Playwright Pytest plugin to give us a page object.
+
+```py
+def test_is_chromium(page):
+    page.goto("https://www.google.com")
+    page.type("input[name=q]", "Playwright GitHub")
+    page.click("input[type=submit]")
+    page.waitForSelector("text=microsoft/Playwright")
+```
+
+You can run it with `pytest` or optionally specify multiple browsers to run the test on like `pytest --browser chromium --browser firefox --browser webkit` which will run 3 tests in the end.
+
+## Summary
+
+Playwright Python is still under development, but for small projects with are not used in production its worth it to try it out to see if you benefit from it compared to other libraries. If you encounter any bugs or find some missing feature, feel free to file an issue on [GitHub](https://github.com/microsoft/playwright-python).
