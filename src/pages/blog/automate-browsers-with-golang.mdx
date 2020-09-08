@@ -1,0 +1,131 @@
+export const meta = {
+  title: 'Automate Chromium, Firefox, and WebKit with Go',
+  description: "Control browsers in the cloud with Golang by using the Playwright library.",
+  author: "Max Schmitt",
+  date: "2020-09-12",
+  tags: ["tutorial", "golang", "getting-started"],
+  hidden: true
+}
+
+## Introduction
+
+Automating browsers in the cloud, like on Kubernetes with a lightweight, type-safe, and easy to use programming language is especially for critical applications useful. In this blog post, we're gonna focus on the [Go version]([GitHub](https://github.com/mxschmitt/playwright-go)) of [Playwright](https://github.com/microsoft/playwright), what the current state is and what their limits are.
+
+[Playwright](https://github.com/microsoft/playwright) is a Node.js library to automate Chromium, Firefox and WebKit with a single API. Playwright is built to enable cross-browser web automation that is ever-green, capable, reliable and fast. Headless execution is supported for all the browsers on all platforms.
+
+Playwright for [Go](https://golang.org) aims to be a 1:1 wrapper of the JavaScript version. It uses like [Playwright for Python](https://github.com/microsoft/playwright-python) the official driver implementation internally. Since Go is quite different compared to JavaScript and Python, there are some key differences:
+
+- Dynamic values: When you interact with the browser process and want to execute JavaScript in it and return dynamic values, Playwright for Go does internally convert it to the corresponding Go data type. In the user implementation, you have to cast it to the `interface{}` based type which you want.
+- Event handling: Since Go is a sync language we implemented the event handling with a sync implementation. For routes e.g. or popups when the user relies on doing something while a click is e.g. blocking after an alert we internally execute that in a Go routine.
+- Optional parameters: For optional parameters, we are using structs with pointers to the basic value types. We provide helper methods for String/Int/Bool/Float to make the developer experience smooth.
+
+### Examples
+
+The core concept of the driver implementations like Go or Python is based on a subproces which is started in the background. This will be done with the `Run()` and the corresponding `Stop()` method.
+
+### Create screenshots
+
+```go
+package main
+
+import (
+	"log"
+
+	"github.com/mxschmitt/playwright-go"
+)
+
+func main() {
+	pw, err := playwright.Run()
+	if err != nil {
+		log.Fatalf("could not launch playwright: %v", err)
+	}
+	browser, err := pw.Chromium.Launch()
+	if err != nil {
+		log.Fatalf("could not launch Chromium: %v", err)
+	}
+	page, err := browser.NewPage()
+	if err != nil {
+		log.Fatalf("could not create page: %v", err)
+	}
+	if _, err = page.Goto("http://whatsmyuseragent.org/", playwright.PageGotoOptions{
+		WaitUntil: playwright.String("networkidle"),
+	}); err != nil {
+		log.Fatalf("could not goto: %v", err)
+	}
+	if _, err = page.Screenshot(playwright.PageScreenshotOptions{
+		Path: playwright.String("foo.png"),
+	}); err != nil {
+		log.Fatalf("could not create screenshot: %v", err)
+	}
+	if err = browser.Close(); err != nil {
+		log.Fatalf("could not close browser: %v", err)
+	}
+	if err = pw.Stop(); err != nil {
+		log.Fatalf("could not stop Playwright: %v", err)
+	}
+}
+```
+
+The core concept of Playwright is based on a browser that has multiple contexts. A single context is an isolated entity that has separate state for cookies or local storage. Each context then has multiple pages that shares their browser session with each other.
+
+We specify `networkidle` to the `Page.Goto()` call which waits after there is a network idle on the page for at least 500ms. You can either pass then a path to the `Page.Screenshot()` method or use the returned data ([]byte) directly.
+
+### Automate websites
+
+In this example we're navigating to [Hacker News](https://news.ycombinator.com/) (popular tech news) site, crawling the current entries, and printing them to the standard output. This could in this case be done using HTML scrapers since Hacker News is based on returning rendered HTML but our approach would also work for dynamically generated sites with JavaScript which use e.g. React, Vue or Angular.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/mxschmitt/playwright-go"
+)
+
+func main() {
+	pw, err := playwright.Run()
+	if err != nil {
+		log.Fatalf("could not start playwright: %v", err)
+	}
+	browser, err := pw.Chromium.Launch()
+	if err != nil {
+		log.Fatalf("could not launch browser: %v", err)
+	}
+	page, err := browser.NewPage()
+	if err != nil {
+		log.Fatalf("could not create page: %v", err)
+	}
+	if _, err = page.Goto("https://news.ycombinator.com"); err != nil {
+		log.Fatalf("could not goto: %v", err)
+	}
+	entries, err := page.QuerySelectorAll(".athing")
+	if err != nil {
+		log.Fatalf("could not get entries: %v", err)
+	}
+	for i, entry := range entries {
+		titleElement, err := entry.QuerySelector("td.title > a")
+		if err != nil {
+			log.Fatalf("could not get title element: %v", err)
+		}
+		title, err := titleElement.TextContent()
+		if err != nil {
+			log.Fatalf("could not get text content: %v", err)
+		}
+		fmt.Printf("%d: %s\n", i+1, title)
+	}
+	if err = browser.Close(); err != nil {
+		log.Fatalf("could not close browser: %v", err)
+	}
+	if err = pw.Stop(); err != nil {
+		log.Fatalf("could not stop Playwright: %v", err)
+	}
+}
+```
+
+In this example, we're making use of an selector on the latest news entries. We then loop over them, get its corresponding header/title element and print it.
+
+## Summary
+
+In this introduction, we went through two examples and an introduction of Playwright for Go and its current state. We are working hard to make it bulletproof and concurrent-safe in the next few weeks to ensure it can be used in production. For further reference, see on [GitHub](https://github.com/mxschmitt/playwright-go).
