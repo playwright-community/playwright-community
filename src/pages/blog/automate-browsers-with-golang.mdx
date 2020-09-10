@@ -1,27 +1,25 @@
 export const meta = {
-  title: 'Automate Chromium, Firefox, and WebKit with Go',
+  title: 'Automate Chromium, Firefox, and WebKit with Go (preview)',
   description: "Control browsers in the cloud with Golang by using the Playwright library.",
   author: "Max Schmitt",
-  date: "2020-09-12",
-  tags: ["tutorial", "golang", "getting-started"],
-  hidden: true
+  date: "2020-09-10",
+  tags: ["tutorial", "golang", "getting-started"]
 }
 
 ## Introduction
 
-Automating browsers in the cloud, like on Kubernetes with a lightweight, type-safe, and easy to use programming language is especially for critical applications useful. In this blog post, we're gonna focus on the [Go version]([GitHub](https://github.com/mxschmitt/playwright-go)) of [Playwright](https://github.com/microsoft/playwright), what the current state is and what their limits are.
+Automating browsers in the cloud, like on Kubernetes with a lightweight, type-safe, and easy to use programming language is especially useful for critical applications. In this blog post, we're gonna focus on the [Go version]([GitHub](https://github.com/mxschmitt/playwright-go)) of [Playwright](https://github.com/microsoft/playwright), what the current state is and what their limits are.
 
 [Playwright](https://github.com/microsoft/playwright) is a Node.js library to automate Chromium, Firefox and WebKit with a single API. Playwright is built to enable cross-browser web automation that is ever-green, capable, reliable and fast. Headless execution is supported for all the browsers on all platforms.
 
-Playwright for [Go](https://golang.org) aims to be a 1:1 wrapper of the JavaScript version. It uses like [Playwright for Python](https://github.com/microsoft/playwright-python) the official driver implementation internally. Since Go is quite different compared to JavaScript and Python, there are some key differences:
+Playwright for [Go](https://golang.org) aims to be a 1:1 wrapper of the JavaScript version. It uses like [Playwright for Python](https://github.com/microsoft/playwright-python) the official driver implementation internally. Go has key differences compared to JavaScript and Python which affected on the Playwright implementation:
 
-- Dynamic values: When you interact with the browser process and want to execute JavaScript in it and return dynamic values, Playwright for Go does internally convert it to the corresponding Go data type. In the user implementation, you have to cast it to the `interface{}` based type which you want.
-- Event handling: Since Go is a sync language we implemented the event handling with a sync implementation. For routes e.g. or popups when the user relies on doing something while a click is e.g. blocking after an alert we internally execute that in a Go routine.
-- Optional parameters: For optional parameters, we are using structs with pointers to the basic value types. We provide helper methods for String/Int/Bool/Float to make the developer experience smooth.
+- Dynamic values: When you interact with the browser process and want to execute JavaScript in it which returns dynamic values, Playwright for Go does internally convert it to the corresponding Go data types. In the user implementation, you have to cast it from the `interface{}` based type to the basic types, `map[string]interface{}` or `[]interface{}`.
+- Optional parameters: For optional parameters, we are using structs with pointers to the basic types. We provide helper methods for String/Int/Bool/Float to make the developer experience smooth.
 
 ### Examples
 
-The core concept of the driver implementations like Go or Python is based on a subproces which is started in the background. This will be done with the `Run()` and the corresponding `Stop()` method.
+The core concept of the driver implementations like Go or Python is based on a sub process which is started in the background. This will be done with the `Run()` and the corresponding `Stop()` method.
 
 ### Create screenshots
 
@@ -35,19 +33,23 @@ import (
 )
 
 func main() {
+	// Launching the driver internally
 	pw, err := playwright.Run()
 	if err != nil {
 		log.Fatalf("could not launch playwright: %v", err)
 	}
+	// Start the Chromium browser
 	browser, err := pw.Chromium.Launch()
 	if err != nil {
 		log.Fatalf("could not launch Chromium: %v", err)
 	}
+	// Creates internally a context and a new page
 	page, err := browser.NewPage()
 	if err != nil {
 		log.Fatalf("could not create page: %v", err)
 	}
-	if _, err = page.Goto("http://whatsmyuseragent.org/", playwright.PageGotoOptions{
+	// Visit the website and wait for a network idle for at least 500ms
+	if _, err = page.Goto("http://whatsmyuseragent.org", playwright.PageGotoOptions{
 		WaitUntil: playwright.String("networkidle"),
 	}); err != nil {
 		log.Fatalf("could not goto: %v", err)
@@ -60,19 +62,17 @@ func main() {
 	if err = browser.Close(); err != nil {
 		log.Fatalf("could not close browser: %v", err)
 	}
-	if err = pw.Stop(); err != nil {
-		log.Fatalf("could not stop Playwright: %v", err)
-	}
+	if err = pw.Stop(); err != nil { log.Fatalf("could not stop Playwright: %v", err) }
 }
 ```
 
-The core concept of Playwright is based on a browser that has multiple contexts. A single context is an isolated entity that has separate state for cookies or local storage. Each context then has multiple pages that shares their browser session with each other.
+The core concept of Playwright is based on a browser that has multiple contexts. A single context is an isolated entity that has separate state for cookies or local storage. Each context has multiple pages with browser session shared between each other.
 
-We specify `networkidle` to the `Page.Goto()` call which waits after there is a network idle on the page for at least 500ms. You can either pass then a path to the `Page.Screenshot()` method or use the returned data ([]byte) directly.
+We specify `networkidle` to the `Page.Goto()` call which waits after there is a network idle on the page for at least 500ms. You can either pass then a path to the `Page.Screenshot()` method or use the returned data (`[]byte`) directly.
 
 ### Automate websites
 
-In this example we're navigating to [Hacker News](https://news.ycombinator.com/) (popular tech news) site, crawling the current entries, and printing them to the standard output. This could in this case be done using HTML scrapers since Hacker News is based on returning rendered HTML but our approach would also work for dynamically generated sites with JavaScript which use e.g. React, Vue or Angular.
+In this example we're navigating to [Hacker News](https://news.ycombinator.com/) (popular tech news) site, crawling the current entries, and printing them to the standard output. This could in this case be done using HTML scrapers since Hacker News is based on returning rendered HTML but our approach would also work for dynamically generated sites with JavaScript which use e.g. React, Vue or Angular as a frontend framework.
 
 ```go
 package main
@@ -100,11 +100,13 @@ func main() {
 	if _, err = page.Goto("https://news.ycombinator.com"); err != nil {
 		log.Fatalf("could not goto: %v", err)
 	}
+	// Looping over the DOM elements
 	entries, err := page.QuerySelectorAll(".athing")
 	if err != nil {
 		log.Fatalf("could not get entries: %v", err)
 	}
 	for i, entry := range entries {
+		// Finding the next title link element
 		titleElement, err := entry.QuerySelector("td.title > a")
 		if err != nil {
 			log.Fatalf("could not get title element: %v", err)
@@ -113,6 +115,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("could not get text content: %v", err)
 		}
+		// Printing it to the console
 		fmt.Printf("%d: %s\n", i+1, title)
 	}
 	if err = browser.Close(); err != nil {
@@ -124,8 +127,8 @@ func main() {
 }
 ```
 
-In this example, we're making use of an selector on the latest news entries. We then loop over them, get its corresponding header/title element and print it.
+In this example, we're making use of a selector on the latest news entries. We then loop over them, get its corresponding header/title element and print it to the console.
 
 ## Summary
 
-In this introduction, we went through two examples and an introduction of Playwright for Go and its current state. We are working hard to make it bulletproof and concurrent-safe in the next few weeks to ensure it can be used in production. For further reference, see on [GitHub](https://github.com/mxschmitt/playwright-go).
+In this introduction, we went through two examples and an introduction of Playwright for Go and its current state. We are working to make it bulletproof, concurrent-safe, and adding more tests in the next few weeks to ensure it can be used in production. For further reference, see on [GitHub](https://github.com/mxschmitt/playwright-go).
