@@ -19,9 +19,9 @@ To fix these issues, Checkly has created a product to provide developer-friendly
 
 There are two types of checks which you can use. API Checks to validate a given response body, status code, or schemas like JSON or GraphQL or browser-based tests on which we'll focus on this blog post. Browser-based tests are running a headless Chromium instance in the cloud to validate e.g. that your production login is working. Other common alternative scenarios would be:
 
-- buy an item in your shop and validate that the user flow is working
-- validate that the OAuth login with e.g. Google is working
-- using a search on your website to ensure your elastic search in the background is correctly configured and holds the expected data
+- Buy an item in your shop and validate that the user flow is working.
+- Validate that the OAuth login with e.g. Google is working.
+- Using a search on your website to ensure your elastic search in the background is correctly configured and serves the expected data.
 
 Checkly itself gives you the ability to run any Node.js related code either with Playwright or Puppeteer to automate your user flows. They have a secret store built in to provide the secrets over to your code once it is running.
 
@@ -55,7 +55,7 @@ This at all replaces already quite a lot of common monitoring solutions. Instead
 
 For more advanced integration, Checkly provides support for GitHub, which gives you a lot of other integrations like with Vercel or Heroku. This could e.g. be used to run your end-to-end tests on a Pull Request level with an environment that was created by one of these PaaS (Platform as a Service) providers.
 
-<img src="/blog/status-check-monitoring-with-playwright-on-checkly/github-pr.png" style={{maxWidth: 500}}/>
+<img src="/blog/status-check-monitoring-with-playwright-on-checkly/github-pr.png" style={{maxWidth: "min(100%, 500px)"}}/>
 
 ## Summary
 
