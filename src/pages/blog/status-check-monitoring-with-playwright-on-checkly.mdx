@@ -11,7 +11,7 @@ export const meta = {
 
 Having a safe, functional, and feature-rich configured monitoring and status checks in place is nowadays needed to ensure a fast error reporting and by that a good uptime so your SLA is getting respected. The typical monitoring solutions are e.g. Grafana which would be feature-rich but has no good native integration for launching browsers to emulate a real user. Also, you need to host it yourself which is mostly for monitoring solutions not advised (or you need a HA installation in another data center or cloud provider).
 
-To fix these issues, Checkly has created a product to provide developer-friendly status checks, which can be used to launch browsers in the cloud. By using it you also don't need to spin up an own instance in your infrastructure since Checkly is a SaaS (Software as a Service) product and they host it for you. They even provide a full public dashboard for your customers.
+To fix these issues, Checkly has created a product to provide developer-friendly status checks, which can be used to launch browsers in the cloud. By using it you also don't need to spin up an own instance in your infrastructure since Checkly is a SaaS (Software as a Service) product and they host it for you. They even provide a full public dashboard for your customers. Starting from today they provide a full Playwright integration.
 
 <img src="/blog/status-check-monitoring-with-playwright-on-checkly/checkly-home-dashboard.png" style={{maxWidth: "80%"}}/>
 
@@ -61,4 +61,6 @@ For more advanced integration, Checkly provides support for GitHub, which gives 
 
 Checkly provides an easy way of adding either status checks or entire end-to-end tests to your web applications which have now also Playwright support available. We at the Playwright Community are using it to ensure that the services which we publicly expose are on one hand high-available and on the other by that fully-functional when e.g. upgrading dependencies.
 
-For more information, see on [checklyhq.com](https://www.checklyhq.com).
+We're looking forward to how Checkly will make their monitoring solution even more accessible for developers with e.g. versioned code, an integrated Monaco editor with better auto-completion, or support for custom NPM modules. We would recommend giving it a try and have not to worry about where to run your status checks or end-to-end tests and benefit from simplicity.
+
+For more information, see on [checklyhq.com](https://www.checklyhq.com) and on [theheadless.dev](https://theheadless.dev) a resource by Checkly to get started with Playwright.
