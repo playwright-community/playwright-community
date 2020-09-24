@@ -1,0 +1,68 @@
+export const meta = {
+  title: 'Monitoring with Playwright on Checkly made easy',
+  description: "Use Playwright to run your status checks in the cloud to monitor the availability of your web applications.",
+  author: "Max Schmitt",
+  date: "2020-09-24",
+  tags: ["checkly", "monitoring", "playwright"],
+  hidden: true
+}
+
+## Introduction
+
+Nowadays, catching issues with your service early on is paramount to ensuring that your SLAs are being met. For this reason, having a reliable and feature-rich active monitoring solution in place is a must. The typical monitoring solutions are e.g. Grafana which would be feature-rich but has no good native integration for launching browsers to emulate a real user. Also, you need to host it yourself which is mostly for monitoring solutions not advised (or you need a HA installation in another data center or cloud provider).
+
+To fix these issues, Checkly has created a product to provide developer-friendly status checks, which can be used to launch browsers in the cloud. By using it you also don't need to spin up an own instance in your infrastructure since Checkly is a SaaS (Software as a Service) product and they host it for you. They even provide a full public dashboard for your customers. Starting from today they provide a full Playwright integration.
+
+<img src="/blog/status-check-monitoring-with-playwright-on-checkly/checkly-home-dashboard.png" style={{maxWidth: "80%"}}/>
+
+## Usage
+
+There are two types of checks which you can use. API checks to validate a given response body, status code, or schemas like JSON or GraphQL or browser-based tests on which we'll focus on this blog post. Browser-based tests are running a headless Chromium instance in the cloud to validate e.g. that your production login is working. Other common alternative scenarios would be:
+
+- Buy an item in your shop and validate that the user flow is working.
+- Validate that the OAuth login with e.g. Google is working.
+- Using a search on your website to ensure your elastic search in the background is correctly configured and serves the expected data.
+
+Checkly itself gives you the ability to run any Node.js related code either with Playwright or Puppeteer to automate your user flows. They have a secret store built in to provide the secrets over to your code once it is running.
+
+```js
+const assert = require("chai").assert;
+const playwright = require("playwright");
+
+const browser = await playwright.chromium.launch();
+const page = await browser.newPage();
+await page.goto("https://playwright.tech");
+
+assert.equal(await page.title(), "Everything about the Playwright framework - Playwright Community 🎭");
+await page.waitForSelector("text=Playwright Community");
+await page.waitForSelector("text=Try Playwright");
+assert.isAbove(await page.$$eval("article", elements => elements.length), 8)
+await browser.close();
+```
+
+In this example we're ensuring the following checks:
+
+- Assert that the title has the expected value
+- Assert that "Playwright Community" is on the page
+- Assert that "Try Playwright" is on the page
+- Assert that at least 8 articles are on the page
+
+If one of them is failing, Checkly will automatically treat this as a failing test and alert the user by e.g. Slack, PagerDuty, SMS, or Email.
+
+## Integrations
+
+This at all replaces already quite a lot of common monitoring solutions. Instead of configuring complex user interfaces, you can create your own Node.js scripts that perform your status checks which will run in the cloud.
+
+For more advanced integration, Checkly provides support for GitHub, which gives you a lot of other integrations like with Vercel or Heroku. This could e.g. be used to run your end-to-end tests on a Pull Request level with an environment that was created by one of these PaaS (Platform as a Service) providers.
+
+<img src="/blog/status-check-monitoring-with-playwright-on-checkly/github-pr.png" style={{maxWidth: "min(100%, 500px)"}}/>
+
+Also for Terraform, one of the biggest solutions for infrastructure as code they offer integration on [GitHub](https://github.com/checkly/terraform-provider-checkly). This allows you to automatically manage large numbers of checks - a gamechanger when large APIs and hundreds of checks are involved.
+
+## Summary
+
+Checkly provides an easy way of adding either status checks or entire end-to-end tests to your web applications which have now also Playwright support available. We at the Playwright Community are using it to ensure that the services which we publicly expose are on one hand high-available and on the other by that fully-functional when e.g. upgrading dependencies.
+
+We're looking forward to how Checkly will make their monitoring solution even more accessible for developers with e.g. versioned code, an integrated Monaco editor with better auto-completion, support for custom NPM modules, or a better debugging experience. We would recommend giving it a try and have not to worry about where to run your status checks or end-to-end tests and benefit from their simplicity. For a more detailed outlook, they provide an official public roadmap on [GitHub](https://github.com/checkly/public-roadmap).
+
+More information you'll find on [checklyhq.com](https://www.checklyhq.com) and on [theheadless.dev](https://theheadless.dev) a resource by Checkly to get started with Playwright.
