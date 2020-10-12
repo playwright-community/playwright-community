@@ -15,7 +15,7 @@ This technique will often get used for finding possible bugs even before they ge
 
 ## Debugging tests
 
-The caveat of creating and running browser tests is that once changes are getting implemented in the actual codebase, to find the root cause of why a specific test is failing. For this scenario, [Testim](https://www.testim.io) has created a Open Source tool called [Root Cause](https://github.com/testimio/root-cause), that makes it easy to debug and analyze failures with a central interface even when they fail on the CI. It focuses on the following core needs:
+The caveat of creating and running browser tests is that once changes are getting implemented in the actual codebase, to find the root cause of why a specific test is failing. For this scenario, [Testim](https://www.testim.io) has created an Open Source tool called [Root Cause](https://github.com/testimio/root-cause), that makes it easy to debug and analyze failures with a central interface even when they fail on the CI. It focuses on the following core needs:
 
 - Visualize to troubleshoot - Show screenshots and highlight used elements
 - Store locally or in the cloud - Analyse the results locally or on a central hosted interface
@@ -24,7 +24,7 @@ The caveat of creating and running browser tests is that once changes are gettin
 
 ## Integrations
 
-Writing tests in the JavaScript or TypeScript ecosystem is mostly done using the Jest test runner, it provides a solid foundation for finding and running tests and has integrated helper methods to assert values against expected values. The Root Cause project provides integration for common test runners like Jest and Mocha or you can use it directly without any third-party libraries. For Jest, you only have to install it with `npm install @testim/root-cause-jest` from [NPM](http://npmjs.com/package/@testim/root-cause-jest) and adjusting your main Jest configuration, for a full setup guide, see the official documentation on [help.testim.io](https://help.testim.io/docs/root-cause-jest-integration-guide).
+Writing tests in the JavaScript or TypeScript ecosystem is mostly done using the Jest test runner, it provides a solid foundation for finding and running tests and has integrated helper methods to assert values against expected values. The Root Cause project provides integration for common test runners like Jest and Mocha or you can use it directly without any third-party libraries. For Jest, you only have to install it with `npm install @testim/root-cause-jest` from [NPM](http://npmjs.com/package/@testim/root-cause-jest) and adjust your main Jest configuration, for a full setup guide, see the official documentation on [help.testim.io](https://help.testim.io/docs/root-cause-jest-integration-guide).
 
 Once it's successfully integrated you can continue as normal with Playwright. So you can interact with pages to navigate to sites, click on elements, or call your custom logic. Root Cause internally will then record it in the background to provide a first-class debug experience if they are failing.
 
