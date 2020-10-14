@@ -1,0 +1,53 @@
+export const meta = {
+  title: 'Troubleshoot your Playwright tests and find the root cause for failing tests',
+  description: "Overview of the Open Source Root Cause project which makes it easy to find the reason for failing Playwright or Puppeteer tests.",
+  author: "Max Schmitt",
+  date: "2020-10-14",
+  tags: ["debug", "playwright", "puppeteer"],
+}
+
+## Introduction
+
+End-to-end tests are important to ensure that there are no regressions in the functionality of a web application over time. As part of a modern development workflow, we would want to run them automatically in the CI before every code merge to the codebase (e.g. GitHub pull request) and deploy.
+
+An end-to-end test is usually a programmatically executed real user flow in the app, typically executed in the cloud on headless browser instances as part of CI process. End-to-end tests help us to keep our app working and the users satisfied.
+
+On this blog post, we will focus on Playwright, a Node.js library which makes it possible to automate Chromium, Firefox, and WebKit with a single API and Root Cause, a library to help us troubleshoot end-to-end tests.
+
+## Debugging tests
+
+One of the challenges of creating, running and maintaining end-to-end tests is that once changes are implemented, tests might fail and finding the root cause of the failure can be difficult. For this scenario, [Testim](https://www.testim.io) has created an Open Source tool called [Root Cause](https://github.com/testimio/root-cause), that makes it easy to debug and analyze failures with a central interface even when they fail on the CI. It focuses on the following core needs:
+
+- Visualize to troubleshoot - Show screenshots and highlight used elements
+- Store locally or in the cloud - Analyse the results locally or on a central hosted interface
+- Drill-down with data you need - View console logs or the network traffic as HAR files
+- Test run reporting - Access to filter and search functionality
+
+## Integrations
+
+Writing tests in the JavaScript or TypeScript ecosystem is mostly done using the Jest test runner, it provides a solid foundation for finding and running tests and has integrated helper methods to assert values against expected values. The Root Cause project provides integration for common test runners such as Jest and Mocha.
+
+For Jest, you only have to install it with `npm install @testim/root-cause-jest` from [NPM](http://npmjs.com/package/@testim/root-cause-jest) and adjust your main Jest configuration, for a full setup guide, see the official documentation on [help.testim.io](https://help.testim.io/docs/root-cause-jest-integration-guide).
+
+Once it's successfully integrated you can continue as normal with Playwright. So you can interact with pages to navigate to sites, click on elements, or call your custom logic. Root Cause internally will then record it in the background to provide a first-class debug experience if they are failing.
+
+## Managing results
+
+The results which Root Cause is recording gets saved automatically on your disk. You can view them by running `npx root-cause ls` to list them and `npx root-cause show <result-id>` to view a selected report. This will open the interface to see all the tests which were running, stack traces if there are failing tests, and additional metadata for network traffic, pages, or console as you can see here:
+
+<div style={{textAlign: "center", margin: "10px 0"}}>
+  <video playsInline autoPlay preload="metadata" muted loop poster="/blog/troubleshoot-playwright-puppeteer-tests/screenplay-banner.jpg" style={{width: "80%", margin: "auto"}}>
+    <source src="/blog/troubleshoot-playwright-puppeteer-tests/root-cause-local_new_top.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+  </video>
+</div>
+
+## Root Cause Cloud
+
+Root Cause viewer is also available as a [hosted solution](https://www.testim.io/root-cause/) which gives you the flexibility of uploading your test results from your CI provider (e.g. GitHub Actions, or Travis CI) to them and act as a central interface of your project. This automatically will analyze them if multiple are failing for the same reason or give you statistically-based insights.
+
+## Summary
+
+Root Cause is a great way to simplify troubleshooting your Playwright tests. You can get started using the OSS version on GitHub. For more information on the hosted Root Cause solution on [Testim.io](https://www.testim.io/root-cause/) which can be used for free for most use cases. They also provide an example showcase repository [on GitHub](https://github.com/testimio/root-cause-interactive-demo) which demonstrates other integrations like with Mocha.
+
+The Open Source project is hosted on GitHub: [github.com/testimio/root-cause](https://github.com/testimio/root-cause).
