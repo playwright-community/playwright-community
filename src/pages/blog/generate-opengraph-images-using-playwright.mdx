@@ -47,17 +47,23 @@ The last step is to use something like [`react-helmet`](https://github.com/nfl/r
 
 ## Serverless function
 
-Since the page is now referencing from the content over to the AWS Lamda function, we have to implement the automated screenshot generation. Currently, the only way for using Playwright on AWS Lamda is to use the [`playwright-aws-lambda`](https://github.com/JupiterOne/playwright-aws-lambda) package which uses a custom-built Chromium version under the hood.
+Since the page is now referencing from the content over to the AWS Lamda function, we have to implement the automated screenshot generation. Currently, the only way for using Playwright on AWS Lamda is to use the [`chrome-aws-lambda`](https://github.com/alixaxel/chrome-aws-lambda) package which uses a custom-built Chromium version under the hood.
 
 *Serverless functions* are a standardized way of exporting an HTTP handler in a file which then will be available by the given file path. They are available in plenty of languages including Node.js, Go, and Python.
 
 ```js
-import * as playwright from 'playwright-aws-lambda';
+import chromium from 'chrome-aws-lambda';
+import playwright from 'playwright-core';
+
 import { getAbsoluteURL } from 'utils/utils';
 
 export default async (req, res) => {
-  // Start the browser with the AWS Lambda wrapper (playwright-aws-lambda)
-  const browser = await playwright.launchChromium();
+  // Start the browser with the AWS Lambda wrapper (chrome-aws-lambda)
+  const browser = await playwright.chromium.launch({
+    args: chromium.args,
+    executablePath: await chromium.executablePath,
+    headless: chromium.headless,
+  })
   // Create a page with the Open Graph image size best practise
   const page = await browser.newPage({
     viewport: {
@@ -84,7 +90,7 @@ export default async (req, res) => {
 
 The Serverless function will in a nutshell launch the special Chromium instance, navigate to the given URL, create a screenshot, and then writes it to the response.
 
-The entire source code for the [page header](https://github.com/playwright-community/playwright-community/blob/e747e467a66d81a95f4013f683f7306050da70ad/layouts/main.tsx#L16-L21) and the [Serverless function](https://github.com/playwright-community/playwright-community/blob/e747e467a66d81a95f4013f683f7306050da70ad/pages/api/thumbnail.ts#L1-L24) is available on [GitHub](https://github.com/playwright-community/playwright-community).
+The entire source code for the [page header](https://github.com/playwright-community/playwright-community/blob/e747e467a66d81a95f4013f683f7306050da70ad/layouts/main.tsx#L16-L21) and the [Serverless function](https://github.com/playwright-community/playwright-community/blob/master/src/pages/api/thumbnail.ts) is available on [GitHub](https://github.com/playwright-community/playwright-community).
 
 ## Outcome
 
