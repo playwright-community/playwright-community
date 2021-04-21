@@ -1,4 +1,5 @@
 export const getAbsoluteURL = (path: string): string => {
-  const baseURL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
-  return baseURL + path
+  const { VERCEL_URL = "" } = process.env
+  const proto = VERCEL_URL.includes("localhost") ? "http" : "https"
+  return `${proto}://${process.env.VERCEL_URL}${path}`
 }

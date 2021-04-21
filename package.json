@@ -8,7 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "^10.0.0",
+    "chrome-aws-lambda": "^8.0.2",
+    "next": "^10.1.3",
+    "playwright-core": "^1.11.0-next-alpha-apr-20-2021",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
@@ -21,8 +23,6 @@
     "@types/react": "^16.9.53",
     "@types/webpack-env": "^1.15.3",
     "next-images": "^1.6.0",
-    "playwright-aws-lambda": "^0.6.0",
-    "playwright-core": "^1.5.1",
     "postcss-preset-env": "^6.7.0",
     "prism-react-renderer": "^1.1.1",
     "tailwindcss": "^1.9.6",
