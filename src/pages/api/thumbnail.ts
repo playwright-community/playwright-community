@@ -5,6 +5,14 @@ import { getAbsoluteURL } from 'utils/utils';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const testFolder = './node_modules';
+  const fs = require('fs');
+
+  fs.readdir(testFolder, (err, files) => {
+    files.forEach(file => {
+      console.log(file);
+    });
+  });
     await chromium.font("https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf")
     const browser = await playwright.chromium.launch({
       args: chromium.args,
