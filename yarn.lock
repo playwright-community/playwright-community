@@ -3714,10 +3714,10 @@ platform@1.3.6:
   resolved "https://registry.yarnpkg.com/platform/-/platform-1.3.6.tgz#48b4ce983164b209c2d45a107adb31f473a6e7a7"
   integrity sha512-fnWVljUchTro6RiCFvCXBbNhJc2NijN7oIQxbwsyL0buWJPG85v81ehlHI9fXrJsMNgTofEoWIQeClKpgxFLrg==
 
-playwright-core@^1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.11.0.tgz#992c24303ff84cc66022a3327c24026fc433a66a"
-  integrity sha512-P5+FzindrR0wI48WVRBiJ59D1wgladPA7KzODAC+EZkwlrCQ6Pj2L0JkrKMCst/3g/x/nSLYcM+QXk2O3HJ/VQ==
+playwright-core@^1.11.0-next-alpha-apr-20-2021:
+  version "1.11.0-next-alpha-apr-20-2021"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.11.0-next-alpha-apr-20-2021.tgz#dfae9fc1d5fb8e59b846cb6d2576d5b931a77414"
+  integrity sha512-0PVaDEHdavvbztWdYhVz2u4tmLV6GMopDkmi7uuV6yyG1UwMWp1ugOAIMC1WNHV1drc1Tokb15WNw0FKyWgvmQ==
   dependencies:
     commander "^6.1.0"
     debug "^4.1.1"
@@ -3732,7 +3732,6 @@ playwright-core@^1.11.0:
     rimraf "^3.0.2"
     stack-utils "^2.0.3"
     ws "^7.3.1"
-    yazl "^2.5.1"
 
 pngjs@^5.0.0:
   version "5.0.0"
@@ -5232,13 +5231,6 @@ yauzl@^2.10.0:
   dependencies:
     buffer-crc32 "~0.2.3"
     fd-slicer "~1.1.0"
-
-yazl@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/yazl/-/yazl-2.5.1.tgz#a3d65d3dd659a5b0937850e8609f22fffa2b5c35"
-  integrity sha512-phENi2PLiHnHb6QBVot+dJnaAZ0xosj7p3fWl+znIjBDlnMI2PsZCJZ306BPTFOaHf5qdDEI8x5qFrSOBN5vrw==
-  dependencies:
-    buffer-crc32 "~0.2.3"
 
 yocto-queue@^0.1.0:
   version "0.1.0"

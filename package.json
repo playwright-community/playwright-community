@@ -10,7 +10,7 @@
   "dependencies": {
     "chrome-aws-lambda": "^8.0.2",
     "next": "^10.2.0",
-    "playwright-core": "^1.11.0",
+    "playwright-core": "^1.11.0-next-alpha-apr-20-2021",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
