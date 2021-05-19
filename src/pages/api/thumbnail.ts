@@ -5,7 +5,7 @@ import { getAbsoluteURL } from 'utils/utils';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const testFolder = './node_modules';
+    const testFolder = './node_modules/playwright-core';
   const fs = require('fs');
 
   fs.readdir(testFolder, (err, files) => {
