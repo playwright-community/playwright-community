@@ -28,7 +28,7 @@ const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta
     , Published on {new Date(meta.date).toLocaleDateString("en-US")}
   </p>
   {children}
-  <hr />
+  <hr className="my-4"/>
   <script
     src="https://utteranc.es/client.js" // @ts-ignore
     repo="playwright-community/playwright-community"

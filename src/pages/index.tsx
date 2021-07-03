@@ -56,7 +56,7 @@ const Index: NextPage<IndexProps> = ({
 
 Index.getInitialProps = async () => {
   const posts = (context => {
-    const keys = context.keys();
+    const keys = context.keys().filter(key => key.startsWith('pages/blog/'));
     const values = keys.map(context);
     return keys.map((key, index) => {
       // Create slug from filename
