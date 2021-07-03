@@ -8,24 +8,25 @@
     "start": "next start"
   },
   "dependencies": {
-    "chrome-aws-lambda": "^8.0.2",
-    "next": "^10.2.0",
-    "playwright-core": "^1.11.0-next-alpha-apr-20-2021",
+    "autoprefixer": "^10.2.6",
+    "chrome-aws-lambda": "^10.0.0",
+    "next": "^11.0.1",
+    "playwright-core": "^1.12.3",
+    "postcss": "^8.3.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@mdx-js/loader": "^1.6.22",
-    "@next/mdx": "^10.2.0",
+    "@next/mdx": "^11.0.1",
     "@svgr/webpack": "^5.5.0",
     "@types/mdx-js__react": "^1.5.3",
-    "@types/node": "^15.0.1",
-    "@types/react": "^17.0.4",
-    "@types/webpack-env": "^1.16.0",
-    "next-images": "^1.7.0",
-    "postcss-preset-env": "^6.7.0",
-    "prism-react-renderer": "^1.2.0",
-    "tailwindcss": "1.9.6",
-    "typescript": "^4.2.4"
+    "@types/node": "^16.0.0",
+    "@types/react": "^17.0.13",
+    "@types/webpack-env": "^1.16.2",
+    "next-images": "^1.8.1",
+    "prism-react-renderer": "^1.2.1",
+    "tailwindcss": "2.2.4",
+    "typescript": "^4.3.5"
   }
 }
