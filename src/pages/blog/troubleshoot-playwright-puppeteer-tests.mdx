@@ -6,6 +6,12 @@ export const meta = {
   tags: ["debug", "playwright", "puppeteer"],
 }
 
+import Warning from '../../components/Warning'
+
+<Warning>
+  This blog post is outdated. The Root Cause project has been discontinued. For debugging Playwright tests, you can use the <a href="https://playwright.dev/docs/running-tests#debugging-tests">built-in debugging features of Playwright</a>.
+</Warning>
+
 ## Introduction
 
 End-to-end tests are important to ensure that there are no regressions in the functionality of a web application over time. As part of a modern development workflow, we would want to run them automatically in the CI before every code merge to the codebase (e.g. GitHub pull request) and deploy.

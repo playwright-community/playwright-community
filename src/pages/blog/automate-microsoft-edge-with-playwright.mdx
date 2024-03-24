@@ -6,6 +6,12 @@ export const meta = {
   tags: ["microsoft edge", "google chrome", "chromium"]
 }
 
+import Warning from '../../components/Warning'
+
+<Warning>
+  This blog post is outdated. Microsoft Edge can now be used via the <a href="https://playwright.dev/docs/browsers"><i>channel</i></a> option when launching the browser.
+</Warning>
+
 ## Introduction
 
 Testing a web application with end-to-end tests on the actually supported browsers is a real benefit to ensure that the application works as expected for example directly in the Continuous Integration workflow before it is merged and deployed. Playwright provides already full support for Chromium, Firefox, and WebKit out of the box without installing the browsers manually, but since most of the users out there use Google Chrome or Microsoft Edge instead of the Open Source Chromium variant, it's in some scenarios safer to use them to emulate a more real-life browser environment.

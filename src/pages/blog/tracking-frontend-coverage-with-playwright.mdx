@@ -6,6 +6,12 @@ export const meta = {
   tags: ["jest", "coverage", "tutorial"]
 }
 
+import Warning from '../../components/Warning'
+
+<Warning>
+  This blog post is outdated. We recommend e.g. <a href="https://github.com/mxschmitt/playwright-test-coverage">this</a> or <a href="https://github.com/anishkny/playwright-test-coverage">that</a> instead.
+</Warning>
+
 ## Introduction
 
 End-to-End tests play a critical role in modern software development nowadays. As Guillermo Rauch (CEO of Vercel, formerly ZEIT) outlined in his [last blog article](https://rauchg.com/2020/develop-preview-test) about software development, software engineering teams attend to prioritize and implement End-to-End tests over normal unit tests. As an example, they start the real application setup and their dependencies to use it as a real user by browser emulation instead of testing e.g. React components and comparing input and output of them. Especially integrated into the Continuous Integration lifecycle with a CI provider like GitHub Actions ensures always, that the End-to-End tests are passing before they are merged and deployed to production.

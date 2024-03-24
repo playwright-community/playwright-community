@@ -6,6 +6,12 @@ export const meta = {
   tags: ["video", "chromium", "tooling"]
 }
 
+import Warning from '../../components/Warning'
+
+<Warning>
+  This blog post is outdated. We recommend using the <a href="https://playwright.dev/docs/intro">official test-runner</a> and using <a href="https://playwright.dev/docs/trace-viewer-intro">Tracing</a> in order to debug tests. You can also record videos with it of course.
+</Warning>
+
 ## Introduction
 
 Video recordings of your end-to-end test case execution can play a critical role. Not only would these help in debugging issues more efficiently, but you can use recorded videos to show test execution activities to your team and internal stakeholders. Additionally, these recorded videos can be added to your CI pipeline artifacts if a test is failing.
