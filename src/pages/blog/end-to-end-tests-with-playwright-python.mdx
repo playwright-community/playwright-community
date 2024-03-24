@@ -24,16 +24,16 @@ Since the core concept of Playwright is also the same as in the Python version, 
 
 ### Page screenshot - sync
 
-This code snippet navigates to whatsmyuseragent.org in Chromium, Firefox and WebKit, and saves 3 screenshots.
+This code snippet navigates to example.org in Chromium, Firefox and WebKit, and saves 3 screenshots.
 
 ```py
-from playwright import sync_playwright
+from playwright.sync_api import sync_playwright
 
 with sync_playwright() as p:
     for browser_type in [p.chromium, p.firefox, p.webkit]:
         browser = browser_type.launch()
-        page = browser.newPage()
-        page.goto('http://whatsmyuseragent.org/')
+        page = browser.new_page()
+        page.goto('http://example.com/')
         page.screenshot(path=f'example-{browser_type.name}.png')
         browser.close()
 ```
@@ -43,11 +43,11 @@ with sync_playwright() as p:
 This code snippet navigates to example.com in Firefox and executes a script in the page context to determine the window dimensions.
 
 ```py
-from playwright import sync_playwright
+from playwright.sync_api import sync_playwright
 
 with sync_playwright() as p:
     browser = p.firefox.launch()
-    page = browser.newPage()
+    page = browser.new_page()
     page.goto('https://www.example.com/')
     dimensions = page.evaluate('''() => {
       return {
@@ -66,12 +66,12 @@ This code snippet sets up request routing for a Chromium page to log all network
 
 ```py
 import asyncio
-from playwright import async_playwright
+from playwright.async_api import async_playwright
 
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-        page = await browser.newPage()
+        page = await browser.new_page()
 
         def log_and_continue_request(route, request):
             print(request.url)
@@ -83,7 +83,7 @@ async def main():
         await page.goto('http://todomvc.com')
         await browser.close()
 
-asyncio.get_event_loop().run_until_complete(main())
+asyncio.run(main())
 ```
 
 ## Pytest integration
@@ -102,11 +102,13 @@ pip install pytest pytest-playwright
 Pytest has the concept that you have fixtures that will pass the values inside which are specified by the parameter name. In our case, we use for that `page` which will call the Playwright Pytest plugin to give us a page object.
 
 ```py
-def test_is_chromium(page):
+from playwright.sync_api import Page
+
+def test_is_chromium(page: Page) -> None:
     page.goto("https://www.google.com")
-    page.type("input[name=q]", "Playwright GitHub")
-    page.click("input[type=submit]")
-    page.waitForSelector("text=microsoft/Playwright")
+    page.locator("input[name=q]").type("Playwright GitHub")
+    page.locator("input[type=submit]").click()
+    page.get_by_text("microsoft/Playwright").wait_for()
 ```
 
 You can run it with `pytest` or optionally specify multiple browsers to run the test on like `pytest --browser chromium --browser firefox --browser webkit` which will run 3 tests in the end.

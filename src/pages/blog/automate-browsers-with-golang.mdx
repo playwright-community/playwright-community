@@ -55,7 +55,7 @@ func main() {
 		log.Fatalf("could not create page: %v", err)
 	}
 	// Visit the website and wait for a network idle for at least 500ms
-	if _, err = page.Goto("http://whatsmyuseragent.org", playwright.PageGotoOptions{
+	if _, err = page.Goto("http://example.org", playwright.PageGotoOptions{
 		WaitUntil: playwright.String("networkidle"),
 	}); err != nil {
 		log.Fatalf("could not goto: %v", err)
