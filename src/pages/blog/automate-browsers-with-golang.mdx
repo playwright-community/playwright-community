@@ -6,6 +6,12 @@ export const meta = {
   tags: ["tutorial", "golang", "getting-started"]
 }
 
+import Warning from '../../components/Warning'
+
+<Warning>
+  This blog post is outdated. Playwright for Go is now part of the <a href="https://github.com/playwright-community/playwright-go">Playwright Community</a>.
+</Warning>
+
 ## Introduction
 
 Automating browsers in the cloud, like on Kubernetes with a lightweight, type-safe, and easy to use programming language is especially useful for critical applications. In this blog post, we're gonna focus on the [Go version](https://github.com/mxschmitt/playwright-go) of [Playwright](https://github.com/microsoft/playwright), what the current state is and what their limits are.
@@ -49,7 +55,7 @@ func main() {
 		log.Fatalf("could not create page: %v", err)
 	}
 	// Visit the website and wait for a network idle for at least 500ms
-	if _, err = page.Goto("http://whatsmyuseragent.org", playwright.PageGotoOptions{
+	if _, err = page.Goto("http://example.org", playwright.PageGotoOptions{
 		WaitUntil: playwright.String("networkidle"),
 	}); err != nil {
 		log.Fatalf("could not goto: %v", err)
