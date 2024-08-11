@@ -28,16 +28,6 @@ const BlogWrapper: React.FunctionComponent<BlogWrapperProps> = ({ children, meta
     , Published on {new Date(meta.date).toLocaleDateString("en-US")}
   </p>
   {children}
-  <hr className="my-4"/>
-  <script
-    src="https://utteranc.es/client.js" // @ts-ignore
-    repo="playwright-community/playwright-community"
-    issue-term="pathname"
-    theme="github-light"
-    crossOrigin="anonymous"
-    label="blog-comment"
-    async
-  ></script>
 </MainLayout>
 
 const CustomLink: React.FunctionComponent = ({ ...props }) => <a {...props} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" />
