@@ -2,7 +2,6 @@ import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { getAbsoluteURL } from 'utils/utils'
 import PlaywrightIcon from 'components/PlaywrightIcon'
 
 
@@ -14,13 +13,6 @@ interface MainLayoutProps {
 
 const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title, description, image }) => {
     const fullTitle = `${title} - Playwright Community 🎭`
-    const router = useRouter()
-    if (!image) {
-        const searchParams = new URLSearchParams()
-        searchParams.set("path", router.pathname)
-        image = `/api/thumbnail?${searchParams}`
-    }
-    const fullImageURL = getAbsoluteURL(image)
     return (
         <>
             <Head>
@@ -31,11 +23,9 @@ const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ children, title,
                 <meta property="og:title" content={fullTitle} />
                 <meta property="og:type" content="website" />
                 <meta property="og:description" content={description} />
-                <meta property="og:image" content={fullImageURL} />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:title" content={fullTitle} />
                 <meta name="twitter:description" content={description} />
-                <meta name="twitter:image" content={fullImageURL} />
             </Head>
             <nav className="w-full py-4 px-3 shadow" style={{ backgroundColor: "#169de0" }}>
                 <div className="w-full container mx-auto items-center justify-between">
